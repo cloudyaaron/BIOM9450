@@ -154,9 +154,14 @@ function DobChecker() {
 }
 
 function validInfo() {
+    DobChecker()
+    FirstnameChecker()
+    LastnameChecker()
+    EmailChecker()
+    Passwordchecker()
     if (em == false || pas == false || repas == false || fn == false || ln == false || db == false) {
         alert("Somthing wrong with provided detail, Please check highlighted area")
-        console.log(document.getElementById("gender").value)
+
         return false
     }
     return true
