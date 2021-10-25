@@ -15,7 +15,7 @@ lastname.addEventListener("keyup", LastnameChecker)
 var dob = document.getElementById("dob")
 dob.addEventListener("keyup", DobChecker)
 
-
+// indication of each term status, all true means: ready to send this to backend.
 var em = false;
 var pas = false;
 var repas = false;
@@ -28,13 +28,18 @@ var ma = true;
 
 // email checker check email is valid and give feed back in real time
 function EmailChecker() {
+
+    // get highlight element
     const emailhighlight = document.getElementById("emailHL")
 
+    // not ok if nothing in input
     if ((email.value.trim()).length == 0) {
         emailhighlight.innerText = "Email can not be empty"
         emailhighlight.className = "wr"
         em = false
     } else {
+
+        // validate email in right regex
         if (ValidateEmail(email.value) == true) {
 
             // give feedback in correct style
@@ -52,12 +57,17 @@ function EmailChecker() {
 
 //check the password field in real time
 function Passwordchecker() {
+    
+    // get highlight element
     var passwordhighlight = document.getElementById("passwordHL")
+
+    // password need to be longer than 8
     if (password.value.length < 8) {
         passwordhighlight.innerText = "Password should at least longer than 8 char"
         passwordhighlight.className = "wr"
         pas = false
 
+    // validate password in correct regex
     } else if (!ValidatePassword(password.value)) {
 
         passwordhighlight.innerText = "Password have to include both uppercase, lowercase and numbers"
@@ -96,6 +106,7 @@ function RepasswordChecker(repassword) {
     }
 }
 
+// check firstname
 function FirstnameChecker() {
     var firstnamehightlight = document.getElementById("firstnameHL")
     if (firstname.value.length == 0) {
@@ -113,7 +124,7 @@ function FirstnameChecker() {
     }
 }
 
-
+// check lastname
 function LastnameChecker() {
     var lastnamehightlight = document.getElementById("lastnameHL")
     if (lastname.value.length == 0) {
@@ -133,7 +144,7 @@ function LastnameChecker() {
 }
 
 
-
+// check dob
 function DobChecker() {
     var dobhightlight = document.getElementById("dobHL")
     if (dob.value.length == 0) {
@@ -153,6 +164,7 @@ function DobChecker() {
     }
 }
 
+// check everything before submit
 function validInfo() {
     DobChecker()
     FirstnameChecker()
