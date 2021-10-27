@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!-- declare it's a HTML5 file -->
+
+
+
+<html>
+
+<!-- declare head favicon,and css sheet used -->
+
+<head>
+    <link rel="icon" type="image/png" href="Aaronico.png" />
+    <link rel="stylesheet" href="MyOwnUglyCss.CSS">
+    <title> Workshop</title>
+
+</head>
+
+
+<!-- the page start at here -->
+
+
+<body>
+
+    <!-- create the title and logo -->
+    <!-- create a navigation bar to allow user navigates between main and programme page -->
+    <div id="headnav"></div>
+
+    <hr>
+    <hr>
+    <!-- Infomations about the event, location and abstract needed -->
+    <div class="main">
+        <div class="focus">
+            <form id="registrantInfo" onsubmit="return validInfo()" method="GET" action="Confirmation.html" >
+                <h1 align="left">Login details:</h1>
+                <p>
+                    <div class="r2c">
+                        <div class="colright">
+                            <span>Email</span>
+                            <input type="text" id="email" placeholder="Enter your Email">
+                        </div>
+                        <div class="colleft" id="emailHL">
+                            <span></span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="r2c">
+                        <div class="colright">
+                            <span>Password</span>
+                            <input type="password" id="password" placeholder="Enter your password">
+                        </div>
+                        <div id="passwordHL">
+                            <span></span>
+                        </div>
+        
+                    </div>
+                    <br>
+                    <div class="r2c">
+                        <div class="colright">
+                            <span>Confirm Password</span>
+                            <input type="password" id="repassword" onblur=RepasswordChecker(this) placeholder="Re-Enter same password">
+                        </div>
+                        <div id="repasswordHL">
+                            <span></span>
+                        </div>
+        
+                    </div>
+                </p>
+                
+                <br>
+                <hr>
+    
+                <h1 align="left">User details</h1>
+                <p>
+                    <div class="r2c">
+                        <div class="colright">
+                            <span>First Name</span>
+                            <input type="text" id="firstname" placeholder="Enter your First Name">
+                        </div>
+                        <div id="firstnameHL"></div>
+    
+                    </div>
+                    <br>
+                    <div class="r2c">
+                        <div class="colright">
+                            <span>Last Name</span>
+                            <input type="text" id="lastname" placeholder="Enter your Last Name">
+                        </div>
+                        <div id="lastnameHL"></div>
+    
+                    </div>
+                    <br>
+                    <div class="r2c">
+                        <div class="colright">
+                            <span>DOB(dd/mm/yyyy)</span>
+                            <input type="text" id="dob" placeholder="Enter your Date of birth" maxlength="10">
+                        </div>
+                        <div  id="dobHL"></div>
+    
+                    </div>
+                    <br>
+                    <div class="list2c">
+                        <div>
+                            <span>Gender</span>
+                            <select id="gender">
+                                <option value="M">
+                                    Male
+                                </option>
+                                <option value="F">
+                                    Female
+                                </option>
+                            </select>
+                        </div>    
+                    </div>
+                </p>
+    
+                <div>
+                    <input id="market" type="checkbox" checked=true>
+                    <span>I want to reveive marketing material</span>
+                </div>
+                <br><br>
+                <div>
+                    <button onclick=canc() >Cancel</button>
+                    <input type="submit" value="Register Now!"> 
+                </div>
+            </form>
+            
+
+
+        </div>
+    </div>
+    <hr>
+
+</body>
+<script src="header.js"></script>
+<script src="Register.js"></script>
+
+</html>
