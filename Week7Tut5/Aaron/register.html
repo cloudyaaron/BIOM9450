@@ -26,16 +26,18 @@
 
     <hr>
     <hr>
+    <h1></h1>
+
     <!-- Infomations about the event, location and abstract needed -->
     <div class="main">
         <div class="focus">
-            <form id="registrantInfo" onsubmit="return validInfo()" method="GET" action="Confirmation.html" >
+            <form id="registrantInfo" onsubmit="return validInfo()" method="post" action="feedback.php" >
                 <h1 align="left">Login details:</h1>
                 <p>
                     <div class="r2c">
                         <div class="colright">
                             <span>Email</span>
-                            <input type="text" id="email" placeholder="Enter your Email">
+                            <input type="text" name="email" id="email" placeholder="Enter your Email">
                         </div>
                         <div class="colleft" id="emailHL">
                             <span></span>
@@ -45,7 +47,7 @@
                     <div class="r2c">
                         <div class="colright">
                             <span>Password</span>
-                            <input type="password" id="password" placeholder="Enter your password">
+                            <input type="password" name="password" id="password" placeholder="Enter your password">
                         </div>
                         <div id="passwordHL">
                             <span></span>
@@ -73,7 +75,7 @@
                     <div class="r2c">
                         <div class="colright">
                             <span>First Name</span>
-                            <input type="text" id="firstname" placeholder="Enter your First Name">
+                            <input type="text" name="firstname" id="firstname" placeholder="Enter your First Name">
                         </div>
                         <div id="firstnameHL"></div>
     
@@ -82,7 +84,7 @@
                     <div class="r2c">
                         <div class="colright">
                             <span>Last Name</span>
-                            <input type="text" id="lastname" placeholder="Enter your Last Name">
+                            <input type="text" name="lastname" id="lastname" placeholder="Enter your Last Name">
                         </div>
                         <div id="lastnameHL"></div>
     
@@ -91,7 +93,7 @@
                     <div class="r2c">
                         <div class="colright">
                             <span>DOB(dd/mm/yyyy)</span>
-                            <input type="text" id="dob" placeholder="Enter your Date of birth" maxlength="10">
+                            <input type="text" name="dob" id="dob" placeholder="Enter your Date of birth" maxlength="10">
                         </div>
                         <div  id="dobHL"></div>
     
@@ -100,7 +102,7 @@
                     <div class="list2c">
                         <div>
                             <span>Gender</span>
-                            <select id="gender">
+                            <select name="gender" id="gender">
                                 <option value="M">
                                     Male
                                 </option>
@@ -113,7 +115,7 @@
                 </p>
     
                 <div>
-                    <input id="market" type="checkbox" checked=true>
+                    <input id="market" name="market" type="checkbox" checked=true>
                     <span>I want to reveive marketing material</span>
                 </div>
                 <br><br>
