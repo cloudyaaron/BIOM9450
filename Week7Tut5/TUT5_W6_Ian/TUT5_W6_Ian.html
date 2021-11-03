@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Service UNSW WWDC Main Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Styling the top navigation bar */
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+            color: white;
+            text-align: right;
+        }
+
+            /* Styling the topnav links */
+            .topnav a {
+                float: left;
+                display: block;
+                color: #f2f2f2;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+                /* Changing color on hover */
+                .topnav a:hover {
+                    background-color: #ddd;
+                    color: black;
+                }
+
+        /* Styling the content */
+        .content {
+            background-color: #ddd;
+            padding: 10px;
+        }
+
+        /* Styling the footer */
+        .footer {
+            background-color: #f1f1f1;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!--Adding content to the navigation bar-->
+    <div class="topnav">
+        <!--Adding the links to the required pages at the top of the page-->
+        <a href="./TUT5_W6_Ian.html">About Us</a>
+        <a href="./TUT5_W6_Ian_2.html">Workshop Program</a>
+        <a href="./TUT5_W6_Ian.html">Contact Information</a>
+        <b>Service UNSW WWDC 2022</b> <img src="logo.png" width="50" height="50" alt="Company Logo" align="right">
+    </div>
+
+    <div class="content">
+        <!--Writing the Title and Call for Abstract-->
+        <h2>Health Messaging and Coding of Disease Classification 2022</h2>
+        <p>Service UNSW invites you to submit an Abstract for Presentation for the Service UNSW World Wide Developers Conference 2022. Abstracts that are accepted will be asked to deliver a presentation in Sydney, New South Wales, and will also be published in conference proceedings on the Service UNSW website.</p>
+
+        <hr>
+
+        <!--Adding the Contact Details-->
+        <p>Abstracts should be sent to the following Contact Information:</p>
+        <p><b>Ian Nathanael Hadinoto:</b></p>
+        <ul>
+            <li><a href="https://www.WWDCServiceUNSW.org.au">Website</a></li>
+            <li><a href="mailto:i.hadinoto@unsw.edu.au">Email</a></li>
+            <li><a href="tel:+61 412345678">Phone</a></li>
+
+        </ul>
+    </div>
+
+    <div class="footer">
+        <p>Welcome to the Annual Service UNSW Worldwide Developers Conference 2022!</p>
+
+        <hr>
+
+        <!--Adding the venue details-->
+        <p><b>Venue Details:</b></p>
+        <ul>
+            <li>UNSW Sir John Clancy Auditorium</li>
+            <li>9 High St</li>
+            <li>Kensington NSW 2052</li>
+        </ul>
+
+        <hr>
+
+        <!--Adding the registration details-->
+        <h2>Login Details</h2>
+        <form class="form-horizontal">
+            <fieldset>
+
+                <!-- Adding Email Address and Verifying It-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="Email">Email</label>
+                    <div class="col-md-4">
+                        <input id="Email" name="Email" type="text" placeholder="Enter Email" class="form-control input-md" required="" value="" onChange="validEmail(this.value)">
+                        <p id="EmailCheck"></p>
+                        <script>
+                            function validEmail(val) {
+                                const check = /^([0-9a-zA-Z.-]+)@([0-9a-zA-Z.-]+)\.([a-zA-Z]{2,4})$/g;
+                                if (check.test(String(val).toLowerCase())==true) {
+                                    document.getElementById("EmailCheck").value = true;
+                                    document.getElementById("EmailCheck").innerHTML = "No errors";
+			                        document.getElementById("EmailCheck").style.color = 'green';
+                                } else {
+                                    document.getElementById("EmailCheck").value = false;
+                                    document.getElementById("EmailCheck").innerHTML = "Email Address is invalid";
+			                        document.getElementById("EmailCheck").style.color = 'red';
+                            }
+                            }
+                        </script>
+
+                    </div>
+                </div>
+
+                <!-- Adding Re Enter Password and Verifying It-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="Password">Password</label>
+                    <div class="col-md-4">
+                        <input id="Password" name="Password" type="password" placeholder="Enter Password" class="form-control input-md" required="" value="" onChange="validPassword(this.value)">
+                        <p id="PasswordCheck"></p>
+                        <script>
+                            function validPassword(val) {
+                                var check = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/g;
+                                if (check.test(String(val))==true && val.length > 8) {
+                                    document.getElementById("PasswordCheck").value = true;
+                                    document.getElementById("PasswordCheck").innerHTML = "No errors";
+			                        document.getElementById("PasswordCheck").style.color = 'green';
+                                } else {
+                                    document.getElementById("PasswordCheck").value = false;
+                                    document.getElementById("PasswordCheck").innerHTML = "Passwords must contain at least 8 characters and include uppercase, lowercase and numbers";
+			                        document.getElementById("PasswordCheck").style.color = 'red';
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Adding Re Enter Password and Verifying It-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="ReEnter Password">Re-enter Password</label>
+                    <div class="col-md-4">
+                        <input id="ReEnterPassword" name="ReEnter Password" type="password" placeholder="Repeat Password" class="form-control input-md" required="" value="" onChange="validReEnterPassword(this.value)">
+                        <p id="ReEnterPasswordCheck"></p>
+                        <script>
+                            function validReEnterPassword(val) {
+                                var Password = document.getElementById("Password");
+                                if (Password.value == val) {
+                                    document.getElementById("ReEnterPasswordCheck").value = true;
+                                    document.getElementById("ReEnterPasswordCheck").innerHTML = "No errors";
+			                        document.getElementById("ReEnterPasswordCheck").style.color = 'green';
+                                } else {
+                                    document.getElementById("ReEnterPasswordCheck").value = false;
+                                    document.getElementById("ReEnterPasswordCheck").innerHTML = "Passwords must match";
+			                        document.getElementById("ReEnterPasswordCheck").style.color = 'red';
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Adding First Name and Verifying It-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="FirstName">First Name</label>
+                    <div class="col-md-4">
+                        <input id="FirstName" name="FirstName" type="text" placeholder="Enter First Name" class="form-control input-md" required="" value="" onChange="validFirstName(this.value)">
+                        <p id="FirstNameCheck"></p>
+                        <script>
+                            function validFirstName(val) {
+                                var check = /(^[A-Za-z \-']+$)/g;
+                                if (check.test(String(val)) == true) {
+                                    document.getElementById("FirstNameCheck").value = true;
+                                    document.getElementById("FirstNameCheck").innerHTML = "No errors";
+			                        document.getElementById("FirstNameCheck").style.color = 'green';
+                                } else {
+                                    document.getElementById("FirstNameCheck").value = false;
+                                    document.getElementById("FirstNameCheck").innerHTML = "First name should contain only letters, apostrophes, spaces and hyphens";
+			                        document.getElementById("FirstNameCheck").style.color = 'red';
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Adding Last Name and Verifying It-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="LastName">Last Name</label>
+                    <div class="col-md-4">
+                        <input id="LastName" name="LastName" type="text" placeholder="Enter Last Name" class="form-control input-md" required="" value="" onChange="validLastName(this.value)">
+                        <p id="LastNameCheck"></p>
+                        <script>
+                            function validLastName(val) {
+                                var check = /(^[A-Za-z \-']+$)/g;
+                                if (check.test(String(val)) == true) {
+                                    document.getElementById("LastNameCheck").value = true;
+                                    document.getElementById("LastNameCheck").innerHTML = "No errors";
+			                        document.getElementById("LastNameCheck").style.color = 'green';
+                                } else {
+                                    document.getElementById("LastNameCheck").value = false;
+                                    document.getElementById("LastNameCheck").innerHTML = "Last name should contain only letters, apostrophes, spaces and hyphens";
+			                        document.getElementById("LastNameCheck").style.color = 'red';
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Adding Date of Birth and Verifying It-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="DOB">DOB(dd/mm/yyyy)</label>
+                    <div class="col-md-4">
+                        <input id="DOB" name="DOB" type="text" placeholder="Enter DOB" class="form-control input-md" required="" value="" onChange="validDOB(this.value)">
+                        <p id="DOBCheck"></p>
+                        <script>
+                            function validDOB(val) {
+                                var birthday = val; // Don't get Date yet...
+                                var regexVar = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/; // add anchors; use literal
+                                var regexVarTest = regexVar.test(birthday); // pass the string, not the Date
+                                var userBirthDate = new Date(birthday.replace(regexVar, "$3-$2-$1")); // Use YYYY-MM-DD format
+                                var todayYear = (new Date()).getFullYear(); // Always use FullYear!!
+                                var cutOff150 = new Date();
+                                var future = new Date();
+                                cutOff150.setFullYear(todayYear - 150);
+                                future.setFullYear(todayYear);
+                                if (!regexVarTest) { // Test this before the other tests
+                                    document.getElementById("DOBCheck").value = false;
+                                    document.getElementById("DOBCheck").innerHTML = "Please enter date of birth as dd/mm/yyyy";
+			                        document.getElementById("DOBCheck").style.color = 'red';
+                                } else if (isNaN(userBirthDate)) {
+                                    document.getElementById("DOBCheck").value = false;
+                                    document.getElementById("DOBCheck").innerHTML = "Invalid DOB";
+			                        document.getElementById("DOBCheck").style.color = 'red';
+                                } else if (userBirthDate < cutOff150) {
+                                    document.getElementById("DOBCheck").value = false;
+                                    document.getElementById("DOBCheck").innerHTML = "Invalid DOB: More than 150 years old";
+			                        document.getElementById("DOBCheck").style.color = 'red';
+                                } else if (userBirthDate > future) {
+                                    document.getElementById("DOBCheck").value = false;
+                                    document.getElementById("DOBCheck").innerHTML = "Invalid DOB: Future date";
+			                        document.getElementById("DOBCheck").style.color = 'red';
+                                } else {
+                                    document.getElementById("DOBCheck").value = true;
+                                    document.getElementById("DOBCheck").innerHTML = "No errors";
+			                        document.getElementById("DOBCheck").style.color = 'green';
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Gender Selection Drop Down Box -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="Gender">Gender</label>
+                    <div class="col-md-4">
+                        <select id="Gender" name="Gender" class="form-control">
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                            <option value="3">Other</option>
+                            <option value="4">Prefer not to say</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Marketing Material Checkbox -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="MarketMaterial"></label>
+                    <div class="col-md-4">
+                        <div class="checkbox">
+                            <label for="MarketMaterial-0">
+                                <input type="checkbox" name="MarketMaterial" id="MarketMaterial-0" value="1">
+                                I want to receive marketing material
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Adding Reset and Register Now Buttons -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="Register"></label>
+                    <div class="col-md-8">
+                        <button id="Register" name="Register" class="btn btn-default">Cancel</button>
+                        <button id="RegisterNow" name="RegisterNow" class="btn btn-success" onclick="myFunction()" formaction = "./TUT5_W6_Ian_3.php">Register Now!</button>
+                        <p id="FormCheck"></p>
+                        <script>
+                            function myFunction() {
+                                var FirstName = document.getElementById("FirstNameCheck").value;
+                                var LastName = document.getElementById("LastNameCheck").value;
+                                var DOB = document.getElementById("DOBCheck").value;
+                                if (FirstName == true && LastName == true && DOB == true) {
+                                    document.getElementById("FormCheck").innerHTML = "Registration Success";
+                                } else {
+                                    alert("Oops! It appears that you have not filled in the form correctly!");
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+
+        <hr>
+
+        <!--Adding the citation for CSS format use and Logos-->
+        <p>Created with: https://www.w3schools.com/css/css_templates.asp </p>
+        <p>Logos are obtained from https://99designs.com.au/inspiration/logos/messaging </p>
+    </div>
+
+</body>
+</html>
+
+
