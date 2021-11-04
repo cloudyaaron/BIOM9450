@@ -63,7 +63,7 @@
             $EM = odbc_result($result,"Email");
 
             // if in list set type to 2
-            if((strtoupper(trim($LN)) == strtoupper(trim($lastname))) && (strtoupper(trim($EM)) == strtoupper(trim($Email)))){
+            if((strtoupper(trim($LN)) == strtoupper(trim($lastname)) && (strtoupper(trim($FN)) == strtoupper(trim($firstname)) ) || (strtoupper(trim($EM)) == strtoupper(trim($Email)))){
                 $type = "2";
             }
 
@@ -79,7 +79,7 @@
             $EM = odbc_result($result,"Email");
 
             // if in banned list set type to 3
-            if((strtoupper(trim($LN)) == strtoupper(trim($lastname))) && (strtoupper(trim($EM)) == strtoupper(trim($Email)))){
+            if((strtoupper(trim($LN)) == strtoupper(trim($lastname)) && (strtoupper(trim($FN)) == strtoupper(trim($firstname)) ) || (strtoupper(trim($EM)) == strtoupper(trim($Email)))){
                 $type = "3";
             }
 

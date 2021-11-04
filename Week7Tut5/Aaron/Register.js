@@ -171,6 +171,7 @@ function validInfo() {
     LastnameChecker()
     EmailChecker()
     Passwordchecker()
+    RepasswordChecker()
     if (em == false || pas == false || repas == false || fn == false || ln == false || db == false) {
         alert("Somthing wrong with provided detail, Please check highlighted area")
         return false
