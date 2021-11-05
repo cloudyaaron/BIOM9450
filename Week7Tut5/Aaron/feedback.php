@@ -60,10 +60,12 @@
         // check each entry if matched in banned list
         while(odbc_fetch_row($result)){
             $LN = odbc_result($result,"LastName");
+            $FN = odbc_result($result,"FirstName");
+
             $EM = odbc_result($result,"Email");
 
             // if in list set type to 2
-            if((strtoupper(trim($LN)) == strtoupper(trim($lastname)) && (strtoupper(trim($FN)) == strtoupper(trim($firstname)) ) || (strtoupper(trim($EM)) == strtoupper(trim($Email)))){
+            if( ( (strtoupper(trim($LN)) == strtoupper(trim($lastname)) )  && ( strtoupper(trim($FN)) == strtoupper(trim($firstname)) )  )|| (strtoupper(trim($EM)) == strtoupper(trim($Email)) ) ){
                 $type = "2";
             }
 
@@ -76,10 +78,12 @@
         // check each entry if matched in banned list
         while(odbc_fetch_row($result)){
             $LN = odbc_result($result,"LastName");
+            $FN = odbc_result($result,"FirstName");
+
             $EM = odbc_result($result,"Email");
 
             // if in banned list set type to 3
-            if((strtoupper(trim($LN)) == strtoupper(trim($lastname)) && (strtoupper(trim($FN)) == strtoupper(trim($firstname)) ) || (strtoupper(trim($EM)) == strtoupper(trim($Email)))){
+            if( ( (strtoupper(trim($LN)) == strtoupper(trim($lastname)) )  && ( strtoupper(trim($FN)) == strtoupper(trim($firstname)) )  )|| (strtoupper(trim($EM)) == strtoupper(trim($Email)) ) ){
                 $type = "3";
             }
 
@@ -174,7 +178,7 @@
                     Warning, Duplicate Registration!
                 </h1>
                 <h2>
-                    $firstname $lastname, you have already registered!
+                    $FN $LN, you have already registered!
                 </h2>
                     <div class='citetext'>If you forget your detail, plz contact us through email</div>
                 <hr>
