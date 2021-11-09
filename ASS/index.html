@@ -1,51 +1,84 @@
 <!DOCTYPE html>
-<head>
+<!-- declare it's a HTML5 file -->
 
-    <!-- bootswatch css file -->
-    <link rel="stylesheet" href="Litera.css">
+
+
+<html>
+
+<!-- declare head favicon,and css sheet used -->
+
+<head>
+    <link rel="icon" type="image/png" href="ServiceUNSW.png" />
+    <link rel="stylesheet" href="MyOwnUglyCss.CSS">
+    <title> ServiceUNSW</title>
 
 </head>
 
+
+<!-- the page start at here -->
+
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Service UNSW</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-      
-          <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav me-auto">
-              <li class="nav-item">
-                <a class="nav-link active" href="#">Home
-                  <span class="visually-hidden">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Separated link</a>
-                </div>
-              </li>
-            </ul>
-            <form class="d-flex">
-              <input class="form-control me-sm-2" type="text" placeholder="Search">
-              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-            </form>
-          </div>
+
+    <!-- create the title and logo -->
+    <!-- <div id="headnav"></div>  -->
+    <div class="title">
+        <img src="ServiceUNSW.png" alt="Service UNSW" width="40" height="40" align="left">
+        <h1 align="left" > Medication and Diet Regime Management System  </h1>
+        <div align="right" class="cite">powered by ServiceUNSW</div>
+    </div>
+
+    <!-- Infomations about the event, location and abstract needed -->
+    <div class="main">
+        <div>
+
+            <hr>
+            <div class="focus">
+                <h1 align="center">
+                    Medication and Diet Regime Management System (Employee Only)
+               </h1>
+                <form id="registrantInfo" onsubmit="return validInfo();" method="post" action="main.php" >
+                    <p>
+                        <div class="r2c">
+                            <div class="colright">
+                                <span>Username</span>
+                                <input type="text" name="username" id="username" placeholder="Enter your username">
+                            </div>
+                            <div class="colleft" id="usernameHL">
+                                <span></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="r2c">
+                            <div class="colright">
+                                <span>Password</span>
+                                <input type="password" name="password" id="password" placeholder="Enter your password">
+                            </div>
+                            <div id="passwordHL">
+                                <span></span>
+                            </div>
+                        </div>
+                        <br>
+                    </p>
+                    <div>
+                        <button onclick=canc() >Login</button>
+                    </div>
+                </form>
+            </div>
+            <hr>
+
         </div>
-      </nav>
+    </div>
+    <hr>
+
+    <!-- A footer that give some cool contact info for user -->
+    <div class="bottomtag">
+        <a>Only Qualified ServiceUNSW Employee are allowed to access this site  ||  </a>
+        <a> <b>Customer Services:</b> </a>
+        <a href="tel:12-34-56" class="plain">12-34-56</a>
+    </div>
+
 </body>
+<script src="header.js"></script>
+
+</html>

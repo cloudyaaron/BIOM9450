@@ -1,0 +1,232 @@
+/* color are chosen picked from  Coolors.co for a better reading and comfort HCI purpose
+
+    same color theme across pages help user conecntrate and easy to locate the websites
+
+    #353535 
+    #3C6E71
+    #FFFFFF
+    #D9D9D9
+    #284B63
+
+    All code is written by meself except tooltip code is adapted from W3C https://www.w3schools.com/css/css_tooltip.asp
+*/
+a{
+    text-decoration: none;
+
+}
+
+a:hover{
+    text-decoration:underline;
+
+}
+
+
+
+.title {
+    height: auto;
+    width:  100%;
+    background-color: #D9D9D9;
+    color:#3C6E71;
+    text-align: left;
+}
+
+.bottomtag {
+    position:fixed;
+    bottom: 0px;
+    background-color: #D9D9D9;
+    width: 100%;
+    text-align: center;
+    color:#3C6E71;
+}
+
+.plain{
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.plain:hover{
+    text-decoration: underline;
+    color: #FFFFFF;
+}
+
+.navbar{
+    /* overflow: hidden; */
+    background-color: #284B63;
+    list-style-type: none;
+    width:  100%;
+    margin: 0px;
+    padding: 2px;
+    height: auto;
+    display: flex;
+    /* justify-content: flex-end */
+}
+
+.navbar a{
+    list-style-type: none;
+    padding: 10px 10px;
+    font-size: 17px;
+}
+
+
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.navbar a:hover{
+    list-style-type: none;
+    background-color: #353535;
+    margin: 0;
+    padding: 5px 5px;
+    font-size: 18px;
+    border:  solid #284B63;
+
+}
+
+.navbar a:active{
+    background-color: #284B63;
+    color:#3C6E71;
+}
+
+.navbar .reglogbutton{
+    border: solid #3C6E71;
+    background-color: red;
+    text-align: right;
+    width: 20%;
+    float: right;
+}
+
+.main {
+    padding: 16px;
+    background-color: #D9D9D9;
+    width: 100%;
+    padding: 2px;
+}
+
+.fulltable {
+    width: 100%;
+}
+
+.fulltable thead{
+    text-align: left;
+    background-color: #3C6E71;
+    color: #FFFFFF;
+}
+
+.fulltable .firstcol{
+    text-align: center;
+    border-right: double #3C6E71;
+    border-left: double #3C6E71;
+
+}
+
+.fulltable tr:hover{
+    background-color: #284B63;
+    color: #FFFFFF;
+}
+
+p{
+    padding: 2px;
+}
+
+.submitmethod{
+    columns: 2;
+}
+
+/* the tool tip css not my own work, it is from code from w3c 
+https://www.w3schools.com/css/css_tooltip.asp */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted #3C6E71; 
+  }
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #3C6E71;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+    content: " ";
+}
+  
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.list2c{
+    columns: 2;
+    display:inline-block
+}
+
+.r2c{
+    columns: 2;
+}
+
+.list2c .col{
+    text-align: center;
+    list-style-type:none;
+    
+}
+
+.colleft{
+    text-align: left;
+    list-style-type:none;
+}
+
+.colright{
+    text-align: right;
+    list-style-type:none;
+    
+}
+
+.list2c .col .content_list{
+    text-align: left;
+    list-style-type:lower-roman;
+    
+}
+
+
+.icsfile{
+    border: solid #3C6E71;
+    background-color: #284B63;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.main .citetext{
+    text-align: right;
+    color: #284b6380;
+    display: inline-block;
+
+}
+
+.focus{
+    background-color: #87c4c7;
+    width: 80%;
+    height: 50%;
+    text-align: center;
+    padding: 10;
+    margin: 5%;
+    border: solid 10px #FFFFFF;
+}
+
+.co{
+    color: green;
+    font-weight: bold;
+    border: 1px seashell;
+}
+
+.wr{
+    color: red;
+    font-weight: bold;
+    border: dotted 1px yellow;
+    text-align: middle;
+}
