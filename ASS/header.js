@@ -13,13 +13,15 @@ const header = '\
         <span class=" tooltiptext">Only certein level stuff able to access</span>\
     </div>\
     <div class=" tooltip" > \
-        <a href="index.html" onclick="" class="plain">logout</a>\
+        <a href="index.html" onclick="logout()" class="plain">logout</a> \
+        <span class=" tooltiptext"> Remember to logout every time</span> \
     </div >\
  </div>';
 
 document.getElementById("headnav").innerHTML = header;
 
 function logout() {
-    document.cookie = "token = ; expires=Thu, 01 Jan 1970 00:00:01; path=/;";
+    document.cookie = "token=; Expires=Thu, 01 Jan 1970 00:00:01 GMT;Path=/;";
+    alert("log out");
     window.location.href="index.html";
 }
