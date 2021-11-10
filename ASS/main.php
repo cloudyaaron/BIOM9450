@@ -25,8 +25,52 @@
 
     <!-- Infomations about the event, location and abstract needed -->
     <div class="main">
+        <?php
+            $valid = false;
+
+            // if the request is noraml log in to the page
+            if (!empty($_POST['username']) && !empty($_POST['password'])) {
+                $username = $_POST['username'];
+                $password = $_POST['password'];
+                echo "username:\n";
+                echo "$username \n";
+                echo "password:\n";
+                echo "$password \n";
+
+                $valid = true;
+                setcookie("token","aRandomToken");
+
+            // else request can be either direct visit or contain a token
+            } else{
+
+                // check if user has a token
+                if (!empty($_COOKIE["token"]) ) {
+                    # code...
+                    echo "valid from token";
+                    $valid = true;
+
+                // invalid visit show error
+                }else{
+                    $valid = false;
+                }
+            }
+
+            // show valid page, main page
+            if ($valid) {
+                # code...
+
+            // show reject info
+            }else{
+                echo "<div class='wr'>invalid</div>";
+            }
+
+
+
+
+        ?>
         <div>
-            hi
+            
+
         </div>
     </div>
     <hr>
