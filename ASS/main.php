@@ -40,9 +40,7 @@
                 $valid = true;
 
                 // validate user detail with database
-                $dbpath = "C:/Users/Aaron/Desktop/BIOM9450/BIOM9450/ASS/Ass.accdb";
-                // $dbpath = "C:/Users/Aaron/Desktop/BIOM9450/BIOM9450/ASS/Database1.mdb";
-                $conn = odbc_connect("Driver={Microsoft Access Driver (*.mdb, *.accdb)};dbq=$dbpath",'','',SQL_CUR_USE_ODBC);
+                $conn = odbc_connect("ass",'','',SQL_CUR_USE_ODBC);
                 
                 // report a error if connection failed
                 if(!$conn){
