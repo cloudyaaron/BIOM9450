@@ -19,17 +19,71 @@
 
 
 <body>
+    <div class='main'>
 
-    <!-- create the title and logo -->
-    <div id="headnav"></div> 
+    <?php
+        $valid = false;
 
-    <!-- Infomations about the event, location and abstract needed -->
-    <div class="main">
-        <div class="focus">
-            <h1>Database Management</h1>
-        </div>
+        if (!empty($_COOKIE['token'])) {
+
+            $t = $_COOKIE['token'];
+            // validate user detail with database
+            $conn = odbc_connect("ass",'','',SQL_CUR_USE_ODBC);
+
+            // report a error if connection failed
+            if(!$conn){
+                echo "<div class='wr'>Internal Unkown Error, Plz contact us about this issue</div>";
+            }
+
+            // Check if user exist
+            $sql_query = "SELECT * FROM [LoginStatus] INNER JOIN [Practitioner] 
+            ON LoginStatus.PractitionerID = Practitioner.PractitionerID 
+            WHERE `Token` = '$t'";
+            $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+            $result_array = odbc_fetch_array($result);
+            odbc_close($conn); 
+            if ($t == $result_array['Token']) {
+                $L = $result_array['Level'];
+                $valid = true;         
+            }else{
+                $valid = false;
+            }  
+        } else{
+            $valid = false;
+        }
+
+        // if token exist
+        if ($valid) {
+            // <!-- create the title and logo -->
+            echo "<div id='headnav'></div>"; 
+
+            // manage page, for user to add and edit data
+            echo "
+                <div class='focus'>
+                    <h1>Database Management</h1>
+                </div>
+                <hr>"
+                ;
+
+
+        // if direct visit or token lost, then return user to login page
+        }else{
+            echo "
+            <div class='title'>
+            <img src='ServiceUNSW.png' alt='Service UNSW' width='40' height='40' align='left'>
+            <h1 align='left' > Medication and Diet Regime Management System  </h1>
+            <div align='right' class='cite'>powered by ServiceUNSW</div>
+            </div>"
+            ;
+            echo "<div class='wr'>User token invalid</div>";
+            echo "<div class='wr'>Check login session status detail</div>";
+            echo "<div class='focus'><b>You will back at login page in a 3 seconds<b></div>";
+            header("refresh:3; url=index.php");
+
+        }
+    
+    ?>
     </div>
-    <hr>
 
     <!-- A footer that give some cool contact info for user -->
     <div class="bottomtag">

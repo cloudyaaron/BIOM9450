@@ -13,7 +13,7 @@ const header = '\
         <span class=" tooltiptext">Only certein level stuff able to access</span>\
     </div>\
     <div class=" tooltip" > \
-        <a href="index.html" onclick="logout()" class="plain">logout</a> \
+        <a onclick="logout()" class="plain">logout</a> \
         <span class=" tooltiptext"> Remember to logout every time</span> \
     </div >\
  </div>';
@@ -21,7 +21,12 @@ const header = '\
 document.getElementById("headnav").innerHTML = header;
 
 function logout() {
-    document.cookie = "token=; Expires=Thu, 01 Jan 1970 00:00:01 GMT;Path=/;";
-    alert("log out");
-    window.location.href="index.html";
+    // Event.preventDefault()
+    var c = confirm("Are you sure to log out?");
+    if(c == true){
+        window.location.href="index.php";
+        document.cookie = "token=; Expires=Thu, 01 Jan 1970 00:00:01 GMT;Path=/;";
+    }else{
+        console.log("all good")
+    }
 }

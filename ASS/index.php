@@ -27,6 +27,34 @@
         <div align="right" class="cite">powered by ServiceUNSW</div>
     </div>
 
+    <?php
+
+        if (!empty($_COOKIE['token'])) {
+
+            $t = $_COOKIE['token'];
+            // validate user detail with database
+            $conn = odbc_connect("ass",'','',SQL_CUR_USE_ODBC);
+
+            // report a error if connection failed
+            if(!$conn){
+                echo "<div class='wr'>Internal Unkown Error, Plz contact us about this issue</div>";
+            }
+
+            // Check if user exist
+            $sql_query = "SELECT * FROM [LoginStatus] INNER JOIN [Practitioner] 
+            ON LoginStatus.PractitionerID = Practitioner.PractitionerID 
+            WHERE `Token` = '$t'";
+            $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+            $result_array = odbc_fetch_array($result);
+            odbc_close($conn); 
+            $u = $result_array['UserName'];
+            if ($t == $result_array['Token']) {
+                header("refresh:0; url=main.php");
+            }
+        }
+    ?>
+
+    
     <!-- login page -->
     <div class="main">
         <div>

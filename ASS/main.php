@@ -30,9 +30,7 @@
                 echo "Text from a function";
             }
 
-
             $valid = false;
-
 
             // if the request is noraml log in to the page
             if (!empty($_POST['username']) && !empty($_POST['password'])) {
@@ -49,7 +47,7 @@
                     echo "<div class='wr'>Internal Unkown Error, Plz contact us about this issue</div>";
                 }
                 
-                // Check if user exist and if password is correct
+                // Check if user exist
                 $sql_query = "SELECT * FROM Practitioner WHERE `UserName` = '$username'";
                 $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
                 $result_array = odbc_fetch_array($result);
@@ -93,6 +91,9 @@
                             $result = odbc_exec($conn,$sql_insert) or die(odbc_errormsg());
                         }
  
+                    // incorrect password
+                    }else{
+                        $valid = false;
                     }
                 }
 
@@ -104,8 +105,26 @@
 
                 // check if user has a token
                 if (!empty($_COOKIE["token"]) ) {
-                    $valid = true;
-
+                    $t = $_COOKIE['token'];
+                    // validate user detail with database
+                    $conn = odbc_connect("ass",'','',SQL_CUR_USE_ODBC);
+        
+                    // report a error if connection failed
+                    if(!$conn){
+                        echo "<div class='wr'>Internal Unkown Error, Plz contact us about this issue</div>";
+                    }
+        
+                    // Check if user login sesssion exist
+                    $sql_query = "SELECT * FROM [LoginStatus] INNER JOIN [Practitioner] 
+                    ON LoginStatus.PractitionerID = Practitioner.PractitionerID 
+                    WHERE `Token` = '$t'";
+                    $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                    $result_array = odbc_fetch_array($result);
+                    odbc_close($conn); 
+                    
+                    if ($t == $result_array['Token']) {
+                        $valid = true;
+                    }
                 // invalid visit show error
                 }else{
                     $valid = false;
@@ -131,7 +150,7 @@
                 echo "<div class='wr'>User token invalid</div>";
                 echo "<div class='wr'>Check login session status detail</div>";
                 echo "<div class='focus'><b>You will back at login page in a 3 seconds<b></div>";
-                header("refresh:3; url=index.html");
+                header("refresh:3; url=index.php");
 
             }
 
