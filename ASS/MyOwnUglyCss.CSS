@@ -231,3 +231,18 @@ https://www.w3schools.com/css/css_tooltip.asp */
     text-align: middle;
 }
 
+.grid-container{
+    display: grid;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    grid-template-columns: auto auto auto;
+}
+
+.grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #284B63;
+    font-size: 30px;
+    text-align: center;
+    padding: 50px;
+    cursor: pointer;
+  }

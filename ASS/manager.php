@@ -44,7 +44,9 @@
             odbc_close($conn); 
             if ($t == $result_array['Token']) {
                 $L = $result_array['Level'];
-                $valid = true;         
+                $valid = true;
+                $user = $result_array['UserName'];
+         
             }else{
                 $valid = false;
             }  
@@ -59,11 +61,40 @@
 
             // manage page, for user to add and edit data
             echo "
-                <div class='focus'>
-                    <h1>Database Management</h1>
-                </div>
+                <h1>Database Management</h1>
+                <div align='left' class='citetext'> Welcom back --$user </div>
+
                 <hr>"
                 ;
+
+            echo "
+            <div class='grid-container'>
+                <div class='grid-item'>
+                    Medications
+                </div>
+                <div class='grid-item'>
+                    Diet Regieme
+                </div>
+                <div class='grid-item'>
+                    Patients
+                </div>
+                <div class='grid-item'>
+                    Patients
+                </div>
+                <div class='grid-item'>
+                    Food Types
+                </div>
+                <div class='grid-item'>
+                    Record Status
+                </div>
+                <div class='grid-item'>
+                    Round time
+                </div>
+                <div class='grid-item'>
+                    login session
+                </div>
+            </div>
+            ";
 
 
         // if direct visit or token lost, then return user to login page

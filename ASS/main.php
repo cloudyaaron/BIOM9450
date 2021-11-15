@@ -65,7 +65,7 @@
                         $t = openssl_random_pseudo_bytes(16);
                         $t = bin2hex($t);
                         setcookie("token",$t);
-
+                        $user = $result_array['UserName'];
                         // Registrate token in database
                         $practionerID = $result_array['PractitionerID'];
                         $d = strtotime("now .GMT-9");
@@ -124,6 +124,8 @@
                     
                     if ($t == $result_array['Token']) {
                         $valid = true;
+                        $user = $result_array['UserName'];
+
                     }
                 // invalid visit show error
                 }else{
@@ -135,7 +137,9 @@
             if ($valid) {
                 # code...
                 echo "<div id='headnav'></div>"; 
-
+                echo "<h1>Main</h1>";
+                echo "<div align='left' class='citetext'> Welcom back --$user </div>";
+                echo "<hr>";
 
 
             // show reject info
@@ -144,7 +148,7 @@
                     <div class='title'>
                     <img src='ServiceUNSW.png' alt='Service UNSW' width='40' height='40' align='left'>
                     <h1 align='left' > Medication and Diet Regime Management System  </h1>
-                    <div align='right' class='cite'>powered by ServiceUNSW</div>
+                    <div align='right' class='citetext'>powered by ServiceUNSW</div>
                     </div>"
                     ;
                 echo "<div class='wr'>User token invalid</div>";
