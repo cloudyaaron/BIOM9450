@@ -66,6 +66,7 @@
                         $t = bin2hex($t);
                         setcookie("token",$t);
                         $user = $result_array['UserName'];
+                        $L = $result_array['Level'];
                         // Registrate token in database
                         $practionerID = $result_array['PractitionerID'];
                         $d = strtotime("now .GMT-9");
@@ -125,6 +126,7 @@
                     if ($t == $result_array['Token']) {
                         $valid = true;
                         $user = $result_array['UserName'];
+                        $L = $result_array['Level'];
 
                     }
                 // invalid visit show error
@@ -138,7 +140,7 @@
                 # code...
                 echo "<div id='headnav'></div>"; 
                 echo "<h1>Main</h1>";
-                echo "<div align='left' class='citetext'> Welcom back --$user </div>";
+                echo "<div align='left' class='citetext'> Welcom back --<b>$user</b> Your Level is <b>$L</b></div>";
                 echo "<hr>";
 
 

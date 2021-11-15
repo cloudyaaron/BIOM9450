@@ -62,39 +62,120 @@
             // manage page, for user to add and edit data
             echo "
                 <h1>Database Management</h1>
-                <div align='left' class='citetext'> Welcom back --$user </div>
+                <div align='left' class='citetext'> Welcom back --<b>$user</b> Your Level is <b>$L</b></div>
 
                 <hr>"
                 ;
 
-            echo "
-            <div class='grid-container'>
-                <div class='grid-item'>
-                    Medications
-                </div>
-                <div class='grid-item'>
-                    Diet Regieme
-                </div>
-                <div class='grid-item'>
-                    Patients
-                </div>
-                <div class='grid-item'>
-                    Patients
-                </div>
-                <div class='grid-item'>
-                    Food Types
-                </div>
-                <div class='grid-item'>
-                    Record Status
-                </div>
-                <div class='grid-item'>
-                    Round time
-                </div>
-                <div class='grid-item'>
-                    login session
-                </div>
-            </div>
-            ";
+            // if user is manager or admin
+            if($L >= 2){
+                echo "<div class='grid-container'>";
+                echo "
+                    <div id='medications' class='grid-item'>
+                        Medications
+                        <!-- The Modal -->
+                        <div id='medicationsModal' class='modal'>
+
+                        <!-- Modal content -->
+                            <div class='modal-content'>
+                                <div class='modal-header'>
+                                    <h4>Medications Database</h4>
+                                </div>
+                                <div class='modal-body'>
+                                <input list='meds'>
+                                <datalist id='meds'>
+                                     <!-- <table class='fulltable'>
+                                         <tr>
+                                         <th>Medication Name</th>
+                                         <th>Prescription</th>
+                                         </tr> -->"
+                                        ;
+                                
+                // Get medical database data
+                $conn = odbc_connect("ass",'','',SQL_CUR_USE_ODBC);
+
+                // report a error if connection failed
+                if(!$conn){
+                    echo "<div class='wr'>Internal Unkown Error, Plz contact us about this issue</div>";
+                }
+
+                // get medication data
+                $sql_query = "SELECT * FROM [Medications]";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+
+                while(odbc_fetch_row($result)){
+                    $medname = odbc_result($result,"MedicationName");
+                    $pres = odbc_result($result,"Prescription");
+                    $des = odbc_result($result,"Description");
+
+                    echo "<option value=$medname></option>";
+
+                    // echo "<tr>";
+                    // echo "<td>
+                    // <div class='tooltip'>
+                    // $medname
+                    // <span class='tooltiptext'>$des</span>
+                    // </div>
+                    // </td>";
+                    // if($pres){
+                    //     echo "<td>YES</td>";
+                    // }else{
+                    //     echo "<td>NO</td>";
+                    // }
+                    // echo "</tr>";
+                }
+
+                echo "</datalist>";
+                echo "
+                                    <!-- </table> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>";
+                odbc_close($conn); 
+
+                echo "
+                    <div class='grid-item'>
+                        Diet Regieme
+                    </div>
+                    <div class='grid-item'>
+                        Patients
+                    </div>
+                    <div class='grid-item'>
+                        Food Types
+                    </div>
+                    <div class='grid-item'>
+                        Record Status
+                    </div>
+                    <div class='grid-item'>
+                        Round time
+                    </div>";
+                if($L >= 3){
+                    echo "                    
+                    <div class='grid-item'>
+                        <div class='tooltip'>
+                            User
+                        <span class='tooltiptext'>level 3 Exclusive</span>
+                        </div>
+                    </div>
+                        <div class='grid-item'>
+                            <div class='tooltip'>
+                                login session
+                                <span class='tooltiptext'>level 3 Exclusive</span>
+                            </div>
+                        </div>
+                    </div>";
+                } else{
+                    echo"</div>";
+                }
+
+
+            }else{
+                echo "<div class='wr'>
+                This page is for Level 2 or aboved ONLY
+                </div>";
+            }
+            
 
 
         // if direct visit or token lost, then return user to login page
@@ -125,5 +206,6 @@
 
 </body>
 <script src="header.js"></script>
+<script src="manage.js"></script>
 
 </html>
