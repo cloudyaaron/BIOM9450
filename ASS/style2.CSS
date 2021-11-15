@@ -1,0 +1,9 @@
+* {
+    box-sizing: border-box;
+}
+
+
+.content {
+    width: 800px;
+    margin: 0 auto;
+}

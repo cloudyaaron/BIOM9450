@@ -10,6 +10,19 @@
 
     All code is written by meself except tooltip code is adapted from W3C https://www.w3schools.com/css/css_tooltip.asp
 */
+
+/* the calendar css not my own work, it is from code from codeshack
+https://codeshack.io/event-calendar-php/ */
+* {
+    box-sizing: border-box;
+}
+
+
+.content {
+    width: 800px;
+    margin: 0 auto;
+}
+
 a{
     text-decoration: none;
     cursor: pointer;

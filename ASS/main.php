@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <!-- declare it's a HTML5 file -->
 
+<!-- Calendar functions -->
+<?php
+include 'Calendar.php';
+$calendar = new Calendar('2021-02-02');
+$calendar->add_event('Birthday', '2021-02-03', 1, 'green');
+$calendar->add_event('Doctors', '2021-02-04', 1, 'red');
+$calendar->add_event('Holiday', '2021-02-16', 7);
+?>
 
 
 <html>
@@ -12,6 +20,9 @@
     <link rel="stylesheet" href="MyOwnUglyCss.CSS">
     <title> ServiceUNSW</title>
 
+    <!--Calendar stuff-->
+    <!--<link href="style.css" rel="stylesheet" type="text/css">-->
+    <link href="calendar.css" rel="stylesheet" type="text/css">
 </head>
 
 
@@ -162,9 +173,13 @@
 
 
         ?>
-        <div>
-            
 
+        <!--Adding Calendar-->
+        <div class="content">
+            <?=$calendar?>
+        </div>
+        
+        <div>
         </div>
     </div>
     <hr>
