@@ -82,14 +82,9 @@
                                     <h4>Medications Database</h4>
                                 </div>
                                 <div class='modal-body'>
-                                <input list='meds'>
-                                <datalist id='meds'>
-                                     <!-- <table class='fulltable'>
-                                         <tr>
-                                         <th>Medication Name</th>
-                                         <th>Prescription</th>
-                                         </tr> -->"
-                                        ;
+                                    <input list='meds'>
+                                    <datalist id='meds'>"
+                                    ;
                                 
                 // Get medical database data
                 $conn = odbc_connect("ass",'','',SQL_CUR_USE_ODBC);
@@ -107,27 +102,11 @@
                     $medname = odbc_result($result,"MedicationName");
                     $pres = odbc_result($result,"Prescription");
                     $des = odbc_result($result,"Description");
-
-                    echo "<option value=$medname></option>";
-
-                    // echo "<tr>";
-                    // echo "<td>
-                    // <div class='tooltip'>
-                    // $medname
-                    // <span class='tooltiptext'>$des</span>
-                    // </div>
-                    // </td>";
-                    // if($pres){
-                    //     echo "<td>YES</td>";
-                    // }else{
-                    //     echo "<td>NO</td>";
-                    // }
-                    // echo "</tr>";
+                    echo "<option value='$medname'></option>";
                 }
 
                 echo "</datalist>";
                 echo "
-                                    <!-- </table> -->
                                 </div>
                             </div>
                         </div>
