@@ -8,7 +8,9 @@
     #D9D9D9
     #284B63
 
-    All code is written by meself except tooltip code is adapted from W3C https://www.w3schools.com/css/css_tooltip.asp
+    All code is written by meself except:
+    tooltip code is adapted from W3C https://www.w3schools.com/css/css_tooltip.asp
+    modal is adapted from W3C https://www.w3schools.com/howto/howto_css_modals.asp
 */
 
 /* the calendar css not my own work, it is from code from codeshack
@@ -118,6 +120,8 @@ a:hover{
 
 .fulltable {
     width: 100%;
+    overflow:auto;
+    font-size: 10;
 }
 
 .fulltable thead{
@@ -152,11 +156,12 @@ https://www.w3schools.com/css/css_tooltip.asp */
     position: relative;
     display: inline-block;
     border-bottom: 1px dotted #3C6E71; 
+    text-align: left;
   }
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 120px;
+    width: 200px;
     background-color: #3C6E71;
     color: #fff;
     text-align: center;
@@ -253,9 +258,88 @@ https://www.w3schools.com/css/css_tooltip.asp */
 
 .grid-item {
     background-color: rgba(255, 255, 255, 0.8);
-    border: 1px solid #284B63;
+    border: 2px solid #284B63;
     font-size: 30px;
     text-align: center;
     padding: 50px;
     cursor: pointer;
+}
+
+.grid-item:hover{
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 2px solid #353535;
+}
+
+/* THis is adopted from w3school */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }
+  
+  /* Modal Content */
+  .modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    font-size: 20px;
+
+  }
+  
+  /* Add Animation */
+  @-webkit-keyframes animatetop {
+    from {top:-400px; opacity:0} 
+    to {top:0; opacity:1}
+  }
+  
+  @keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+  }
+  
+  .modal-header {
+    padding: 1px 16px;
+    background-color: #284B63;
+    color: white;
+  }
+  
+  .modal-body {
+    padding: 2px 2px;
+    text-align: left;
+    overflow:scroll;
+    height: 500px;
+    }
+  
+  .modal-footer {
+    padding: 1px 16px;
+    background-color: #353535;
+    color: white;
+  }
+
+.column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}

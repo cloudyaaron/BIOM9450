@@ -77,6 +77,7 @@ $calendar->add_event('Holiday', '2021-02-16', 7);
                         $t = bin2hex($t);
                         setcookie("token",$t);
                         $user = $result_array['UserName'];
+                        $L = $result_array['Level'];
                         // Registrate token in database
                         $practionerID = $result_array['PractitionerID'];
                         $d = strtotime("now .GMT-9");
@@ -136,6 +137,7 @@ $calendar->add_event('Holiday', '2021-02-16', 7);
                     if ($t == $result_array['Token']) {
                         $valid = true;
                         $user = $result_array['UserName'];
+                        $L = $result_array['Level'];
 
                     }
                 // invalid visit show error
@@ -149,7 +151,7 @@ $calendar->add_event('Holiday', '2021-02-16', 7);
                 # code...
                 echo "<div id='headnav'></div>"; 
                 echo "<h1>Main</h1>";
-                echo "<div align='left' class='citetext'> Welcom back --$user </div>";
+                echo "<div align='left' class='citetext'> Welcom back --<b>$user</b> Your Level is <b>$L</b></div>";
                 echo "<hr>";
 
 
