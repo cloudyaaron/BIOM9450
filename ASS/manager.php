@@ -70,6 +70,8 @@
             // if user is manager or admin
             if($L >= 2){
                 echo "<div class='grid-container'>";
+
+                // medications----------------------------------------------------
                 echo "
                     <div id='medications' class='grid-item'>
                         Medications
@@ -82,7 +84,8 @@
                                     <h4>Medications Database</h4>
                                 </div>
                                 <div class='modal-body'>
-                                    <input list='meds'>
+                                    <span>Medications<span>
+                                    <input id='currentMed' list='meds' placeholder='Searching'>
                                     <datalist id='meds'>"
                                     ;
                                 
@@ -97,15 +100,80 @@
                 // get medication data
                 $sql_query = "SELECT * FROM [Medications]";
                 $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
-
+                $total_medications = 0;
+                $ALLMEDS = array();
                 while(odbc_fetch_row($result)){
+                    $medid = odbc_result($result,"MedicationID");
                     $medname = odbc_result($result,"MedicationName");
                     $pres = odbc_result($result,"Prescription");
                     $des = odbc_result($result,"Description");
-                    echo "<option value='$medname'></option>";
-                }
+                    echo "<option class='medicationList' value='$medname'></option>";
+                    $total_medications = $total_medications+1;
+                    $term = array(
+                        "id" => $medid,
+                        "MedicationName" => $medname,
+                        "Prescription" => $pres,
+                        "Description" => $des,
+                    );
+                    $ALLMEDS[] = $term;
 
+                }
+                ?>;
+
+                <!-- pass to JS for later display -->
+                <script>
+                    var meds = <?php echo json_encode($ALLMEDS) ?>;
+                </script>
+
+                <!-- give editor panel a dynamic display -->
+                <?php
                 echo "</datalist>";
+                echo "<button align='right' id='getMedication'>GET</button>";
+
+                echo "<div align='right' class='citetext' style='float:right'>
+                Current database has $total_medications entries 
+                <button id='addMedication' align='right'>Add NEW</button>
+                </div>";
+            
+                echo "<hr>";
+
+                // editor panel
+                echo "<div>";
+                echo "<span>Medications Name</span>";
+                echo "<br>";
+                echo "<input type='text' id='madicationsName' size='50' disabled=true>";
+                echo "<br>";
+                echo "<br>";
+
+                echo "<span>Prescription</span>";
+                echo "<br>";
+                echo "<input type='checkbox' id='medicationsPrescription' disabled=true>";
+                echo "<br>";
+                echo "<br>";
+
+                echo "<span>Description</span>";
+                echo "<br>";
+                echo "<textarea rows='5' cols='100' id='madicationsDescription' disabled=false></textarea>";
+
+                echo "<hr>";
+                echo "
+                <div>
+                    <div align='left' style='float:left;'>
+                        <button id='editMed' disabled>EDIT</button>
+                    </div>
+                    <div align='right' style='float:left;'>
+                    <button id='saveMed' disabled>SAVE</button>
+                    </div>
+                    <div align='right' style='float:right;'>
+                        <button id='deleteMed' disabled>DELETE</button>
+                    </div>
+                </div>
+                
+                ";
+
+
+                echo "</div>";
+
                 echo "
                                 </div>
                             </div>
@@ -113,6 +181,8 @@
                     </div>";
                 odbc_close($conn); 
 
+
+                // Regieme----------------------------------------------------
                 echo "
                     <div class='grid-item'>
                         Diet Regieme
@@ -133,7 +203,7 @@
                     echo "                    
                     <div class='grid-item'>
                         <div class='tooltip'>
-                            User
+                            Practitioner
                         <span class='tooltiptext'>level 3 Exclusive</span>
                         </div>
                     </div>
@@ -184,6 +254,9 @@
     </div>
 
 </body>
+
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
 <script src="header.js"></script>
 <script src="manage.js"></script>
 

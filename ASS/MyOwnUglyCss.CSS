@@ -307,7 +307,7 @@ https://www.w3schools.com/css/css_tooltip.asp */
   }
   
   .modal-body {
-    padding: 2px 2px;
+    padding: 16px 16px;
     text-align: left;
     overflow:scroll;
     height: 500px;
