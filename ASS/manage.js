@@ -105,13 +105,23 @@ editMedButton.onclick = function(event) {
 // save current term
 saveMedButton.onclick = function(event) {
   unlockMedPanel(true);
-  $.ajax({
-    type: 'POST',
-    url: 'request.php',
-    data: {test:'yolo'},
 
-    });
-    saveMedButton.disabled = true
+  fetch('request.php',{
+      method:'post',
+      body: JSON.stringify({
+        "Type":"Medications",
+        "Action":"",
+        "MedicationName":"",
+        "Prescription":"",
+        "Description":"",
+    })
+      }).then(res=> res.json())
+      .then(resp =>
+      console.log(resp)
+      );
+
+
+  saveMedButton.disabled = true
 
 }
 
