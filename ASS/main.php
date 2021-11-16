@@ -139,10 +139,79 @@
             if ($valid) {
                 # code...
                 echo "<div id='headnav'></div>"; 
-                echo "<h1>Main</h1>";
-                echo "<div align='left' class='citetext'> Welcom back --<b>$user</b> Your Level is <b>$L</b></div>";
+                echo "<div>";
+                echo "<hr>";
+                echo "<div align='left' style='float:right;' class='citetext'> Welcom back --<b>$user</b> Your Level is <b>$L</b></div>";
+                $conn = odbc_connect("ass",'','',SQL_CUR_USE_ODBC);
+                // report a error if connection failed
+                if(!$conn){
+                    echo "<div class='wr'>Internal Unkown Error, Plz contact us about this issue</div>";
+                }
+                $sql_query = "SELECT PatientID, FirstName+' '+LastName as [PName] FROM [Patient]";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                $total_p = 0;
+                $ALLp = array();
+
+                echo "<div align='left' style='float:left;'>Patients</div>";
+                echo "<input id='currentP' list='plist' size=50 placeholder='Searching for Paient by ID or Name'>
+                        <datalist id='plist'>"
+                ;
+                while(odbc_fetch_row($result)){
+                    $PatientID = odbc_result($result,"PatientID");
+                    $pname = odbc_result($result,"PName");
+
+                    echo "<option class='pList' value='$PatientID'>$pname</option>";
+                    $total_p = $total_p+1;
+                    $term = array(
+                        "PatientID" => $PatientID,
+                        "FirstName" => $pname,
+                    );
+
+                    $ALLp[] = $term;
+
+                }
+                echo "</datalist>";
+                echo "<button id='getPatient'> GET </button>";
+                echo "</div>";
+                
                 echo "<hr>";
 
+                echo "<div class='row'>
+                <div class='column left' style='background-color:#aaa;'>
+                
+                    <h2 id='patientName'></h2>
+                    <div>Detail</div>
+                </div>
+                <div class='column right' style='background-color:#bbb;'>
+                    <h2>Arrangement</h2>";
+                    echo "<div class='grid-container-main'>";
+                    $start = date('m/d l');
+                    for ($i=0; $i < 7; $i++) { 
+                        echo "
+                        <div id='$i' class='grid-item-main'> $i";
+                        
+                        echo"<!-- The Modal -->
+                            <div class='modal'>
+
+                            <!-- Modal content -->
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h4>$i</h4>
+                                    </div>
+                                    <div class='modal-body'>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ";
+                    }
+                    
+                    
+                echo "
+                </div>
+              </div>";
+                
+                echo "";
 
             // show reject info
             }else{
@@ -169,7 +238,7 @@
 
         </div>
     </div>
-    <hr>
+    
 
     <!-- A footer that give some cool contact info for user -->
     <div class="bottomtag">
@@ -180,5 +249,6 @@
 
 </body>
 <script src="header.js"></script>
+<script src="main.js"></script>
 
 </html>

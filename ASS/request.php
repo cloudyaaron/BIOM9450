@@ -35,7 +35,7 @@
         }else{
             http_response_code(400);
 
-            print(json_encode( array("Type"=>"Not a thing") ));
+            print(json_encode( array("Type"=>"Sorry but we dont have time to finish other stuff") ));
 
         }
         

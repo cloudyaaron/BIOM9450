@@ -4,9 +4,6 @@ let medicationsmodal = document.getElementById("medicationsModal");
 // Get the medication tab that opens the modal
 var medicationsTab = document.getElementById("medications");
 
-// Get the <span> element that closes the modal
-var medicationsClose = document.getElementById("medicationsClose");
-
 // When the user clicks the button, open the modal 
 medicationsTab.onclick = function() {
     medicationsmodal.style.display = "block";
