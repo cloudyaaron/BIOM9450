@@ -44,6 +44,9 @@ function unlockMedPanelButtons(params) {
 
 }
 
+var medID = ""
+
+
 // get detail of meds to editor panel
 getMedButton.onclick = function(event) {
   let exist = false
@@ -61,7 +64,7 @@ getMedButton.onclick = function(event) {
   if (exist) {
     unlockMedPanelButtons(false);
     saveMedButton.disabled = true
-    console.log(meds[index])
+
     medNameBox.value = meds[index]['MedicationName']
     if (meds[index]['Prescription']=='0') {
       prescriptionBox.checked = false
@@ -103,21 +106,25 @@ editMedButton.onclick = function(event) {
 saveMedButton.onclick = function(event) {
   unlockMedPanel(true);
 
-  fetch('request.php',{
+  if (medNameBox.value.trim()!='') {
+    fetch('request.php',{
       method:'post',
       body: JSON.stringify({
         "Type":"Medications",
-        "Action":"",
-        "MedicationName":"",
-        "Prescription":"",
-        "Description":"",
+        "Action":"Save",
+        "MedicationID":medID,
+        "MedicationName":medNameBox.value,
+        "Prescription":prescriptionBox.checked,
+        "Description":descriptionText.value,
     })
-      }).then(res=> res.json())
+      }).then(res=> res.text())
       .then(resp =>
       console.log(resp)
       );
-
-
+  
+  }else{
+    alert('Medication name can not be empty')
+  }
   saveMedButton.disabled = true
 
 }
@@ -127,6 +134,18 @@ deleteMedButton.onclick = function(event) {
   medNameBox.value = ""
   prescriptionBox.checked = false
   descriptionText.value = ""
+
+  fetch('request.php',{
+    method:'post',
+    body: JSON.stringify({
+      "Type":"Medications",
+      "Action":"Delete",
+      "MedicationID":medID,
+  })
+    }).then(res=> res.text())
+    .then(resp =>
+    console.log(resp)
+    );
 
   unlockMedPanel(true);
   unlockMedPanelButtons(true);
