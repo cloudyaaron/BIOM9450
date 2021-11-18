@@ -268,6 +268,15 @@ https://www.w3schools.com/css/css_tooltip.asp */
     cursor: pointer;
 }
 
+.grid-item-s {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid #284B63;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+    cursor:cell;
+}
+
 .grid-item:hover{
     background-color: rgba(255, 255, 255, 0.5);
     border: 2px solid #353535;

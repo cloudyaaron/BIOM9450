@@ -63,17 +63,19 @@ var addMedButton = document.getElementById('addMedication');
 var editMedButton = document.getElementById('editMed');
 var deleteMedButton = document.getElementById('deleteMed');
 var saveMedButton = document.getElementById('saveMed');
+var cancelMedButton = document.getElementById('cancelMed');
+
 
 // get editor panel
 var medNameBox = document.getElementById('madicationsName');
 var prescriptionBox = document.getElementById('medicationsPrescription');
-var descriptionText = document.getElementById('madicationsDescription');
+var descriptionMed = document.getElementById('madicationsDescription');
 
 // unlock the panel
 function unlockMedPanel(params) {
   medNameBox.disabled = params
   prescriptionBox.disabled = params
-  descriptionText.disabled = params
+  descriptionMed.disabled = params
 }
 
 // unlock the button
@@ -107,14 +109,16 @@ getMedButton.onclick = function(event) {
     })
       }).then(res=> res.json())
       .then(data =>{
-        
+        console.log(data)
         if (data != false) {
           medNameBox.value = data['MedicationName']
           prescriptionBox.checked = data['Presctiption']
-          descriptionText.value = data['Description']
+          descriptionMed.value = data['Description']
           unlockMedPanelButtons(false);
           saveMedButton.disabled = true
-  
+          unlockMedPanel(true);
+          currentMed.disabled = false
+
         }else{
           alert('Not exist')
   
@@ -126,18 +130,31 @@ getMedButton.onclick = function(event) {
 
 }
 
+// if added new 
 addMedButton.onclick = function(event){
   unlockMedPanel(false);
   unlockMedPanelButtons(false);
   currentMed.value= ""
   medNameBox.value = ""
   prescriptionBox.checked = false
-  descriptionText.value = ""
+  descriptionMed.value = ""
 
   deleteMedButton.disabled = true
   editMedButton.disabled = true
   currentMed.disabled = true
+  cancelMedButton.disabled = false
+}
 
+// if not edit
+cancelMedButton.onclick = function(params) {
+  currentMed.value= ""
+  medNameBox.value = ""
+  prescriptionBox.checked = false
+  descriptionMed.value = ""
+  unlockMedPanel(true);
+  unlockMedPanelButtons(true);
+  cancelMedButton.disabled = true
+  currentMed.disabled = false
 }
 
 // edit give ability to edit current term
@@ -147,6 +164,7 @@ editMedButton.onclick = function(event) {
   editMedButton.disabled = true
   saveMedButton.disabled = false
   currentMed.disabled = true
+  cancelMedButton.disabled = false
 
 }
 
@@ -164,7 +182,7 @@ saveMedButton.onclick = function(event) {
         "MedicationID":medID,
         "MedicationName":medNameBox.value,
         "Prescription":prescriptionBox.checked,
-        "Description":descriptionText.value,
+        "Description":descriptionMed.value,
     })
       }).then(res=> res.text())
       .then(data =>{
@@ -189,7 +207,7 @@ saveMedButton.onclick = function(event) {
 deleteMedButton.onclick = function(event) {
   medNameBox.value = ""
   prescriptionBox.checked = false
-  descriptionText.value = ""
+  descriptionMed.value = ""
   medID = currentMed.value
 
   fetch('request.php',{
@@ -214,5 +232,5 @@ deleteMedButton.onclick = function(event) {
   unlockMedPanel(true);
   unlockMedPanelButtons(true);
   currentMed.disabled = false
-
+  cancelMedButton.disabled = true
 }

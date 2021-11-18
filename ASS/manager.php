@@ -125,6 +125,9 @@
                                             <div align='right' style='float:right;'>
                                                 <button id='deleteMed' disabled>DELETE</button>
                                             </div>
+                                            <div align='right' style='float:left;'>
+                                                <button id='cancelMed' disabled>Cancel</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -165,40 +168,41 @@
                                         <input type='text' id='RegimesName' size='50' disabled=true>
                                         <br>
                                         <br>
-
-                                        <span>Protein</span>
-                                        <br>
-                                        <input type='number' id='Protein' disabled=true>
-                                        <br>
-                                        <br>
-                                        <span>Fat</span>
-                                        <br>
-                                        <input type='number' id='Fat' disabled=true>
-                                        <br>
-                                        <br>
-                                        <span>Carbs</span>
-                                        <br>
-                                        <input type='number' id='Carbs' disabled=true>
-                                        <br>
-                                        <br>
-                                        <span>Sugar</span>
-                                        <br>
-                                        <input type='number' id='Sugar' disabled=true>
-                                        <br>
-                                        <br>
-                                        <span>Sodium</span>
-                                        <br>
-                                        <input type='number' id='Sodium' disabled=true>
-                                        <br>
-                                        <br>
-                                        <span>Fibre</span>
-                                        <br>
-                                        <input type='number' id='Fibre' disabled=true>
-                                        <br>
-                                        <br>
+                                        <div class='grid-container'>
+                                            <div class='grid-item-s'>
+                                                <span>Protein</span>
+                                                <br>
+                                                <input type='number' id='Protein' disabled=true>
+                                            </div>
+                                            <div class='grid-item-s'>
+                                                <span>Fat</span>
+                                                <br>
+                                                <input type='number' id='Fat' disabled=true>
+                                            </div>
+                                            <div class='grid-item-s'>
+                                                <span>Carbs</span>
+                                                <br>
+                                                <input type='number' id='Carbs' disabled=true>
+                                            </div>
+                                            <div class='grid-item-s'>
+                                                <span>Sugar</span>
+                                                <br>
+                                                <input type='number' id='Sugar' disabled=true>
+                                            </div>
+                                            <div class='grid-item-s'>
+                                                <span>Sodium</span>
+                                                <br>
+                                                <input type='number' id='Sodium' disabled=true>
+                                            </div>
+                                            <div class='grid-item-s'>
+                                                <span>Fibre</span>
+                                                <br>
+                                                <input type='number' id='Fibre' disabled=true>
+                                            </div>
+                                        </div>
                                         <span>Description</span>
                                         <br>
-                                        <textarea rows='5' cols='100' id='ReigiemesDescription' disabled=false></textarea>
+                                        <textarea rows='5' cols='100' id='RegimesDescription' disabled=false></textarea>
 
                                         <hr>
 
@@ -211,6 +215,9 @@
                                             </div>
                                             <div align='right' style='float:right;'>
                                                 <button id='deleteReg' disabled>DELETE</button>
+                                            </div>
+                                            <div align='right' style='float:left;'>
+                                                <button id='cancelReg' disabled>Cancel</button>
                                             </div>
                                         </div>
                                     </div>

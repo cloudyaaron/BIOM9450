@@ -14,11 +14,10 @@ function refreshReg() {
     method:'post',
     body: JSON.stringify({
       "Type":"Regimes",
-      "Action":"ALL"
+      "Action":"ALL",
   })
-    }).then(res=> res.text())
+    }).then(res=> res.json())
     .then(data =>{
-      console.log(data)
       if (data != false) {
         data.forEach(element => {
           var selectChild = document.createElement('option')
@@ -52,15 +51,29 @@ var addRegButton = document.getElementById('addRegime');
 var editRegButton = document.getElementById('editReg');
 var deleteRegButton = document.getElementById('deleteReg');
 var saveRegButton = document.getElementById('saveReg');
+var cancelRegButton = document.getElementById('cancelReg');
 
 // get editor panel
 var RegNameBox = document.getElementById('RegimesName');
-var descriptionText = document.getElementById('RegimesDescription');
+var descriptionReg = document.getElementById('RegimesDescription');
+var Protein = document.getElementById('Protein');
+var Fat = document.getElementById('Fat');
+var Carbs = document.getElementById('Carbs');
+var Sugar = document.getElementById('Sugar');
+var Sodium = document.getElementById('Sodium');
+var Fibre = document.getElementById('Fibre');
 
 // unlock the panel
 function unlockRegPanel(params) {
   RegNameBox.disabled = params
-  descriptionText.disabled = params
+  descriptionReg.disabled = params
+  Protein.disabled = params
+  Fat.disabled = params
+  Carbs.disabled = params
+  Sugar.disabled = params
+  Sodium.disabled = params
+  Fibre.disabled = params
+
 }
 
 // unlock the button
@@ -91,14 +104,21 @@ getRegButton.onclick = function(event) {
     })
       }).then(res=> res.json())
       .then(data =>{
-        
         if (data != false) {
           RegNameBox.value = data['RegimeName']
           prescriptionBox.checked = data['Presctiption']
-          descriptionText.value = data['Description']
+          descriptionReg.value = data['Description']
+          Protein.value = data['Protein']
+          Fat.value = data['Fat']
+          Carbs.value = data['Carbs']
+          Sugar.value = data['Sugar']
+          Sodium.value = data['Sodium']
+          Fibre.value = data['Fibre']
+
+          unlockRegPanel(true);
           unlockRegPanelButtons(false);
           saveRegButton.disabled = true
-  
+          currentReg.disabled = false
         }else{
           alert('Not exist')
   
@@ -115,13 +135,37 @@ addRegButton.onclick = function(event){
   unlockRegPanelButtons(false);
   currentReg.value= ""
   RegNameBox.value = ""
-  descriptionText.value = ""
+  descriptionReg.value = ""
+  Protein.value = ''
+  Fat.value = ''
+  Carbs.value = ''
+  Sugar.value = ''
+  Sodium.value = ''
+  Fibre.value = ''
 
   deleteRegButton.disabled = true
   editRegButton.disabled = true
   currentReg.disabled = true
-
+  cancelRegButton.disabled = false
 }
+
+// if not edit
+cancelRegButton.onclick = function(params) {
+  currentReg.value= ""
+  RegNameBox.value = ""
+  Protein.value = ''
+  Fat.value = ''
+  Carbs.value = ''
+  Sugar.value = ''
+  Sodium.value = ''
+  Fibre.value = ''
+  descriptionReg.value = ""
+  unlockRegPanel(true);
+  unlockRegPanelButtons(true);
+  cancelRegButton.disabled = true
+  currentReg.disabled = false
+}
+
 
 // edit give ability to edit current term
 editRegButton.onclick = function(event) {
@@ -130,7 +174,7 @@ editRegButton.onclick = function(event) {
   editRegButton.disabled = true
   saveRegButton.disabled = false
   currentReg.disabled = true
-
+  cancelRegButton.disabled = false
 }
 
 // save current term
@@ -146,8 +190,14 @@ saveRegButton.onclick = function(event) {
         "Action":"Save",
         "RegimeID":regID,
         "RegimeName":RegNameBox.value,
-        "Prescription":prescriptionBox.checked,
-        "Description":descriptionText.value,
+        "Description":descriptionReg.value,
+        "Protein":Protein.value,
+        "Fat":Fat.value,
+        "Carbs":Carbs.value,
+        "Sugar":Sugar.value,
+        "Sodium":Sodium.value,
+        "Fibre":Fibre.value,
+
     })
       }).then(res=> res.text())
       .then(data =>{
@@ -172,7 +222,7 @@ saveRegButton.onclick = function(event) {
 deleteRegButton.onclick = function(event) {
   RegNameBox.value = ""
   prescriptionBox.checked = false
-  descriptionText.value = ""
+  descriptionReg.value = ""
   regID = currentReg.value
 
   fetch('request.php',{
@@ -197,5 +247,5 @@ deleteRegButton.onclick = function(event) {
   unlockRegPanel(true);
   unlockRegPanelButtons(true);
   currentReg.disabled = false
-
+  cancelRegButton.disabled=true
 }
