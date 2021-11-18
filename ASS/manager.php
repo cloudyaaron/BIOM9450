@@ -133,22 +133,96 @@
                     </div>";
 
 
-                // Regieme----------------------------------------------------
+                // Regime----------------------------------------------------
                 echo "
-                    <div class='grid-item'>
-                        Diet Regieme
-                    </div>
+                    <div id='Regime' class='grid-item'>
+                        Diet regime
+                        <!-- The Modal -->
+                        <div id='regimeModal' class='modal'>
+
+                        <!-- Modal content -->
+                            <div class='modal-content'>
+                                <div class='modal-header'>
+                                    <h4>Diet regime Database</h4>
+                                </div>
+                                <div class='modal-body'>
+                                    <span>regime ID<span>
+                                    <input id='currentReg' list='regs' placeholder='Searching'>
+                                    <datalist id='regs'> </datalist>
+                                    <button align='right' id='getRegime'>GET</button>
+                                    <div align='right' class='citetext' style='float:right'>
+                                        Current database has 
+                                        <span id='totalRegime'>  </span> Reigiemes
+                                        <button id='addRegime' align='right'>Add NEW</button>
+                                    </div>
+
+                                    <hr>
+
+                                    <!-- the editor panel start here--------->
+                                    <div>
+                                        <span>Reigiemes Name</span>
+                                        <br>
+                                        <input type='text' id='RegimesName' size='50' disabled=true>
+                                        <br>
+                                        <br>
+
+                                        <span>Protein</span>
+                                        <br>
+                                        <input type='number' id='Protein' disabled=true>
+                                        <br>
+                                        <br>
+                                        <span>Fat</span>
+                                        <br>
+                                        <input type='number' id='Fat' disabled=true>
+                                        <br>
+                                        <br>
+                                        <span>Carbs</span>
+                                        <br>
+                                        <input type='number' id='Carbs' disabled=true>
+                                        <br>
+                                        <br>
+                                        <span>Sugar</span>
+                                        <br>
+                                        <input type='number' id='Sugar' disabled=true>
+                                        <br>
+                                        <br>
+                                        <span>Sodium</span>
+                                        <br>
+                                        <input type='number' id='Sodium' disabled=true>
+                                        <br>
+                                        <br>
+                                        <span>Fibre</span>
+                                        <br>
+                                        <input type='number' id='Fibre' disabled=true>
+                                        <br>
+                                        <br>
+                                        <span>Description</span>
+                                        <br>
+                                        <textarea rows='5' cols='100' id='ReigiemesDescription' disabled=false></textarea>
+
+                                        <hr>
+
+                                        <div>
+                                            <div align='left' style='float:left;'>
+                                                <button id='editReg' disabled>EDIT</button>
+                                            </div>
+                                            <div align='right' style='float:left;'>
+                                                <button id='saveReg' disabled>SAVE</button>
+                                            </div>
+                                            <div align='right' style='float:right;'>
+                                                <button id='deleteReg' disabled>DELETE</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>";
+
+
+                    echo "
                     <div class='grid-item'>
                         Patients
-                    </div>
-                    <div class='grid-item'>
-                        Food Types
-                    </div>
-                    <div class='grid-item'>
-                        Record Status
-                    </div>
-                    <div class='grid-item'>
-                        Round time
                     </div>";
                 if($L >= 3){
                     echo "                    
@@ -210,6 +284,8 @@
 
 <script src="header.js"></script>
 <script src="medicationManage.js"></script>
+<script src="RegimeManage.js"></script>
+
 <!-- <script src="patientManage.js"></script> -->
 
 </html>

@@ -97,12 +97,48 @@
 
             }
 
+        }
+        if($_POST['Type'] == 'Regimes'){
+
+            // if ask all entry
+            if($_POST['Action']=="ALL"){
+                $sql_query = "SELECT * FROM [DietRegime]";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                $r = array();
+                while (odbc_fetch_row($result)) {
+                    $regid = odbc_result($result,"RegimeID");
+                    $regname = odbc_result($result,"RegimeName");
+                    $regdescription = odbc_result($result,"Description");
+                    $Protein = odbc_result($result,"Protein");
+                    $Fat = odbc_result($result,"Fat");
+                    $Carbs = odbc_result($result,"Carbs");
+                    $Sugar = odbc_result($result,"Sugar");
+                    $Sodium = odbc_result($result,"Sodium");
+                    $Fibre = odbc_result($result,"Fibre");
+
+                    $term = array(
+                        "id" => $regid,
+                        "RegimeName" => $regname,
+                        "Description" => $regdescription,
+                        "Protein" => $Protein,
+                        "Fat" => $Fat,
+                        "Carbs" => $Carbs,
+                        "Sugar" => $Sugar,
+                        "Sodium" => $Sodium,
+                        "Fibre" => $Fibre,
+
+                    );
+                    $r[] = $term;
+                }
+                print(json_encode( $r ));
+            }
+
         }elseif($_POST['Type'] == 'Patients'){
-            print(json_encode(  array("Type"=>"DietRegime") ));
+            print(json_encode(  array("Type"=>"Patients") ));
         }else{
             http_response_code(400);
 
-            print(json_encode( array("Type"=>"Sorry but we dont have time to finish other stuff") ));
+            // print(json_encode( array("Type"=>"Sorry but we dont have time to finish other stuff") ));
 
         }
         

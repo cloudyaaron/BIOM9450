@@ -20,7 +20,6 @@ function refreshMed() {
   })
     }).then(res=> res.json())
     .then(data =>{
-      
       if (data != false) {
         data.forEach(element => {
           var selectChild = document.createElement('option')
@@ -51,6 +50,9 @@ medicationsTab.onclick = function() {
 window.onclick = function(event) {
   if (event.target == medicationsmodal) {
     medicationsmodal.style.display = "none";
+  }
+  if (event.target == regimesmodal) {
+    regimesmodal.style.display = "none";
   }
 }
 
