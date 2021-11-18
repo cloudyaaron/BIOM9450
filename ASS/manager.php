@@ -210,6 +210,6 @@
 
 <script src="header.js"></script>
 <script src="medicationManage.js"></script>
-<script src="patientManage.js"></script>
+<!-- <script src="patientManage.js"></script> -->
 
 </html>

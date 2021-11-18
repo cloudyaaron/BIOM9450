@@ -11,6 +11,7 @@ function refreshMed() {
 
   medlist.innerHTML = ""
 
+  // fetch info from database
   fetch('request.php',{
     method:'post',
     body: JSON.stringify({
@@ -21,6 +22,7 @@ function refreshMed() {
     }).then(res=> res.json())
     .then(data =>{
       
+      // dynamically added info 
       if (data != false) {
         data.forEach(element => {
           var selectChild = document.createElement('option')
@@ -39,7 +41,6 @@ function refreshMed() {
 }
 
 refreshMed();
-
 
 // When the user clicks the button, open the modal 
 medicationsTab.onclick = function() {
@@ -84,40 +85,47 @@ function unlockMedPanelButtons(params) {
 
 var medID = ""
 
-
-
-
 // get detail of meds to editor panel
 getMedButton.onclick = function(event) {
-
   medID = currentMed.value
-  fetch('request.php',{
-    method:'post',
-    body: JSON.stringify({
-      "Type":"Medications",
-      "Action":"Ask",
-      "MedicationID":medID,
-  })
-    }).then(res=> res.json())
-    .then(data =>{
-      
-      if (data != false) {
-        medNameBox.value = data['MedicationName']
-        prescriptionBox.checked = data['Presctiption']
-        descriptionText.value = data['Description']
-        unlockMedPanelButtons(false);
-        saveMedButton.disabled = true
 
-      }else{
-        alert('Not exist')
+  var re = /^\d+/;
+  console.log(re.test(medID))
+  // check if current medID is a number
+  if(!re.test(medID)){
+    alert("Search field only taken number, however text can be searched and auto transfer to id")
+  }else{
 
+    // fetch medication info from api
+    fetch('request.php',{
+      method:'post',
+      body: JSON.stringify({
+        "Type":"Medications",
+        "Action":"Ask",
+        "MedicationID":medID,
+    })
+      }).then(res=> res.json())
+      .then(data =>{
+        
+        // if no error and contain info
+        if (data != false) {
+          medNameBox.value = data['MedicationName']
+          prescriptionBox.checked = data['Presctiption']
+          descriptionText.value = data['Description']
+          unlockMedPanelButtons(false);
+          saveMedButton.disabled = true
+  
+        }else{
+          alert('Not exist')
+  
+        }
       }
-    }
-
+  
     );
-
+  }
 }
 
+// by adding a new term
 addMedButton.onclick = function(event){
   unlockMedPanel(false);
   unlockMedPanelButtons(false);
@@ -147,6 +155,7 @@ saveMedButton.onclick = function(event) {
   unlockMedPanel(true);
   medID = currentMed.value
 
+  // if non null added through api
   if (medNameBox.value.trim()!='') {
     fetch('request.php',{
       method:'post',

@@ -89,32 +89,38 @@ var medID = ""
 
 // get detail of meds to editor panel
 getMedButton.onclick = function(event) {
-
   medID = currentMed.value
-  fetch('request.php',{
-    method:'post',
-    body: JSON.stringify({
-      "Type":"Medications",
-      "Action":"Ask",
-      "MedicationID":medID,
-  })
-    }).then(res=> res.json())
-    .then(data =>{
-      
-      if (data != false) {
-        medNameBox.value = data['MedicationName']
-        prescriptionBox.checked = data['Presctiption']
-        descriptionText.value = data['Description']
-        unlockMedPanelButtons(false);
-        saveMedButton.disabled = true
+  var re = /^\d+$/;
 
-      }else{
-        alert('Not exist')
-
+  // test input format
+  if (!re.test(medID)) {
+    alert('Search field only taken number, however text can be searched and auto transfer to id')
+  }else{
+    fetch('request.php',{
+      method:'post',
+      body: JSON.stringify({
+        "Type":"Medications",
+        "Action":"Ask",
+        "MedicationID":medID,
+    })
+      }).then(res=> res.json())
+      .then(data =>{
+        
+        if (data != false) {
+          medNameBox.value = data['MedicationName']
+          prescriptionBox.checked = data['Presctiption']
+          descriptionText.value = data['Description']
+          unlockMedPanelButtons(false);
+          saveMedButton.disabled = true
+  
+        }else{
+          alert('Not exist')
+  
+        }
       }
-    }
-
+  
     );
+  }
 
 }
 
