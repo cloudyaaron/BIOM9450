@@ -49,36 +49,65 @@ var medID = ""
 
 // get detail of meds to editor panel
 getMedButton.onclick = function(event) {
-  let exist = false
-  let index = 0
-  for(let element of meds){
-    if (element['MedicationName'] === currentMed.value) {
-      exist = true
-      console.log(index)
-      break;
-    }
-    index = index + 1
-  };
+  // let exist = false
+  // let index = 0
+  // for(let element of meds){
+  //   if (element['MedicationName'] === currentMed.value) {
+  //     exist = true
+  //     console.log(index)
+  //     break;
+  //   }
+  //   index = index + 1
+  // };
 
-  // change editor panel
-  if (exist) {
-    unlockMedPanelButtons(false);
-    saveMedButton.disabled = true
+  // // change editor panel
+  // if (exist) {
+  //   unlockMedPanelButtons(false);
+  //   saveMedButton.disabled = true
 
-    medNameBox.value = meds[index]['MedicationName']
-    if (meds[index]['Prescription']=='0') {
-      prescriptionBox.checked = false
-    }else{
-      prescriptionBox.checked = true
+  //   medNameBox.value = meds[index]['MedicationName']
+  //   if (meds[index]['Prescription']=='0') {
+  //     prescriptionBox.checked = false
+  //   }else{
+  //     prescriptionBox.checked = true
+  //   }
+  //   descriptionText.value = meds[index]['Description']
+  // }else{
+  //   alert("Input term is not exist in current database")
+  //   medNameBox.value = ""
+  //   prescriptionBox.checked = false
+  //   descriptionText.value = ""
+  //   exist = false
+  // }
+
+  medID = currentMed.value
+  fetch('request.php',{
+    method:'post',
+    body: JSON.stringify({
+      "Type":"Medications",
+      "Action":"Ask",
+      "MedicationID":medID,
+  })
+    }).then(res=> res.json())
+    .then(data =>{
+      
+      if (data != false) {
+
+        console.log(data)
+        medNameBox.value = data['MedicationName']
+        prescriptionBox.checked = data['Presctiption']
+        descriptionText.value = data['Description']
+        unlockMedPanelButtons(false);
+        saveMedButton.disabled = true
+
+      }else{
+        alert('Not exist')
+
+      }
     }
-    descriptionText.value = meds[index]['Description']
-  }else{
-    alert("Input term is not exist in current database")
-    medNameBox.value = ""
-    prescriptionBox.checked = false
-    descriptionText.value = ""
-    exist = false
-  }
+
+    );
+
 }
 
 addMedButton.onclick = function(event){
@@ -95,7 +124,7 @@ addMedButton.onclick = function(event){
 
 // edit give ability to edit current term
 editMedButton.onclick = function(event) {
-  console.log(meds)
+
   unlockMedPanel(false);
   editMedButton.disabled = true
   saveMedButton.disabled = false
@@ -134,6 +163,7 @@ deleteMedButton.onclick = function(event) {
   medNameBox.value = ""
   prescriptionBox.checked = false
   descriptionText.value = ""
+  medID = currentMed.value
 
   fetch('request.php',{
     method:'post',

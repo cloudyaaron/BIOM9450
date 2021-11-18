@@ -46,7 +46,6 @@
                 $L = $result_array['Level'];
                 $valid = true;
                 $user = $result_array['UserName'];
-         
             }else{
                 $valid = false;
             }  
@@ -84,7 +83,7 @@
                                     <h4>Medications Database</h4>
                                 </div>
                                 <div class='modal-body'>
-                                    <span>Medications<span>
+                                    <span>Medications ID<span>
                                     <input id='currentMed' list='meds' placeholder='Searching'>
                                     <datalist id='meds'>"
                                     ;
@@ -107,7 +106,7 @@
                     $medname = odbc_result($result,"MedicationName");
                     $pres = odbc_result($result,"Prescription");
                     $des = odbc_result($result,"Description");
-                    echo "<option class='medicationList' value='$medname'></option>";
+                    echo "<option class='medicationList' value='$medid'>Name: $medname </option>";
                     $total_medications = $total_medications+1;
                     $term = array(
                         "id" => $medid,

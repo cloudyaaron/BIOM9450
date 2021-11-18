@@ -37,7 +37,7 @@
                 }
 
                 $md = $_POST['Description'];
-                $mID = $_POST['MedicationID'];
+                $mID = intval( $_POST['MedicationID']);
                 // indicates a brand new terms 
                 if ($_POST['MedicationID'] == "") {
                     $sql_insert = "INSERT INTO [Medications]
@@ -56,12 +56,18 @@
                 $mID = intval($_POST['MedicationID']);
 
                 // delete by id
-                if ($_POST['MedicationID'] == "") {
-
-                    $sql_delete = "DELETE FROM [Medications] WHERE `MedicationID` = $mID";
-                    $result = odbc_exec($conn,$sql_delete) or die(odbc_errormsg());
-                }
+                $sql_delete = "DELETE FROM [Medications] WHERE `MedicationID` = $mID";
+                $result = odbc_exec($conn,$sql_delete) or die(odbc_errormsg());
+                
                 print(json_encode( $_POST ));
+
+            }elseif($_POST['Action']=="Ask"){
+                $mID = $_POST['MedicationID'];
+                $sql_query = "SELECT * FROM [Medications] WHERE `MedicationID` = $mID";
+                
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                $r = odbc_fetch_array($result);
+                print(json_encode( $r ));
 
             }
 
