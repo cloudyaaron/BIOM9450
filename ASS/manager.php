@@ -85,54 +85,48 @@
                                 <div class='modal-body'>
                                     <span>Medications ID<span>
                                     <input id='currentMed' list='meds' placeholder='Searching'>
-                                    <datalist id='meds'> </datalist>";
-                echo "<button align='right' id='getMedication'>GET</button>";
+                                    <datalist id='meds'> </datalist>
+                                    <button align='right' id='getMedication'>GET</button>
+                                    <div align='right' class='citetext' style='float:right'>
+                                        Current database has 
+                                        <span id='totalMed'>  </span> entries 
+                                        <button id='addMedication' align='right'>Add NEW</button>
+                                    </div>
 
-                echo "<div align='right' class='citetext' style='float:right'>
-                Current database has <span id='totalMed'>  </span> entries 
-                <button id='addMedication' align='right'>Add NEW</button>
-                </div>";
-            
-                echo "<hr>";
+                                    <hr>
 
-                // editor panel
-                echo "<div>";
-                echo "<span>Medications Name</span>";
-                echo "<br>";
-                echo "<input type='text' id='madicationsName' size='50' disabled=true>";
-                echo "<br>";
-                echo "<br>";
+                                    <!-- the editor panel start here--------->
+                                    <div>
+                                        <span>Medications Name</span>
+                                        <br>
+                                        <input type='text' id='madicationsName' size='50' disabled=true>
+                                        <br>
+                                        <br>
 
-                echo "<span>Prescription</span>";
-                echo "<br>";
-                echo "<input type='checkbox' id='medicationsPrescription' disabled=true>";
-                echo "<br>";
-                echo "<br>";
+                                        <span>Prescription</span>
+                                        <br>
+                                        <input type='checkbox' id='medicationsPrescription' disabled=true>
+                                        <br>
+                                        <br>
 
-                echo "<span>Description</span>";
-                echo "<br>";
-                echo "<textarea rows='5' cols='100' id='madicationsDescription' disabled=false></textarea>";
+                                        <span>Description</span>
+                                        <br>
+                                        <textarea rows='5' cols='100' id='madicationsDescription' disabled=false></textarea>
 
-                echo "<hr>";
-                echo "
-                <div>
-                    <div align='left' style='float:left;'>
-                        <button id='editMed' disabled>EDIT</button>
-                    </div>
-                    <div align='right' style='float:left;'>
-                    <button id='saveMed' disabled>SAVE</button>
-                    </div>
-                    <div align='right' style='float:right;'>
-                        <button id='deleteMed' disabled>DELETE</button>
-                    </div>
-                </div>
-                
-                ";
+                                        <hr>
 
-
-                echo "</div>";
-
-                echo "
+                                        <div>
+                                            <div align='left' style='float:left;'>
+                                                <button id='editMed' disabled>EDIT</button>
+                                            </div>
+                                            <div align='right' style='float:left;'>
+                                                <button id='saveMed' disabled>SAVE</button>
+                                            </div>
+                                            <div align='right' style='float:right;'>
+                                                <button id='deleteMed' disabled>DELETE</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -215,6 +209,7 @@
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 
 <script src="header.js"></script>
-<script src="manage.js"></script>
+<script src="medicationManage.js"></script>
+<script src="patientManage.js"></script>
 
 </html>
