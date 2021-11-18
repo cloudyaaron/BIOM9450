@@ -147,7 +147,7 @@
                 if(!$conn){
                     echo "<div class='wr'>Internal Unkown Error, Plz contact us about this issue</div>";
                 }
-                $sql_query = "SELECT PatientID, FirstName+' '+LastName as [PName] FROM [Patient]";
+                $sql_query = "SELECT PatientID, FirstName+' '+LastName as [PName] FROM [Patients]";
                 $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
                 $total_p = 0;
                 $ALLp = array();

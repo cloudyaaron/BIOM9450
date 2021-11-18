@@ -227,10 +227,93 @@
                     </div>";
 
 
+                    // Patient----------------------------------------------------
                     echo "
-                    <div class='grid-item'>
-                        Patients
-                    </div>";
+                        <div id='Patient' class='grid-item'>
+                            Patients
+                            <!-- The Modal -->
+                            <div id='patientModal' class='modal'>
+    
+                            <!-- Modal content -->
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h4>Patients Database</h4>
+                                    </div>
+                                    <div class='modal-body'>
+                                        <span>Patient ID<span>
+                                        <input id='currentPat' list='pats' placeholder='Searching'>
+                                        <datalist id='pats'> </datalist>
+                                        <button align='right' id='getPatient'>GET</button>
+                                        <div align='right' class='citetext' style='float:right'>
+                                            Current database has 
+                                            <span id='totalPat'>  </span> Patients
+                                            <button id='addPatient' align='right'>Add NEW</button>
+                                        </div>
+    
+                                        <hr>
+    
+                                        <!-- the editor panel start here--------->
+                                        <div class='row'>
+                                            <div class='column left-s'>
+                                                <span>First Name</span>
+                                                <br>
+                                                <input type='text' id='firstName' size='20' disabled=true>
+                                                <br>
+
+                                                <span>Last Name</span>
+                                                <br>
+                                                <input type='text' id='lastName' size='20' disabled=true>
+                                                <br>
+                                            </div>
+
+                                            <div class='column right-s'>
+                                                <img src='ServiceUNSW.png' alt='Service UNSW' width='200' height='200' >
+                                            </div>
+                                        </div>
+                                            <div class='grid-container'>
+                                                <div class='grid-item-s'>
+                                                    <span>Age</span>
+                                                    <br>
+                                                    <input type='number' id='Age' disabled=true>
+                                                </div>
+                                                <div class='grid-item-s'>
+                                                    <span>Gender</span>
+                                                    <br>
+                                                    <select id=Gender>
+                                                        <option value='Male'>
+                                                            Male
+                                                        </option>
+                                                        <option value='Female'>
+                                                            Female
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <span>Description</span>
+                                            <br>
+                                            <textarea rows='5' cols='100' id='PatientDescription' disabled=false></textarea>
+    
+                                            <hr>
+    
+                                            <div>
+                                                <div align='left' style='float:left;'>
+                                                    <button id='editPat' disabled>EDIT</button>
+                                                </div>
+                                                <div align='right' style='float:left;'>
+                                                    <button id='savePat' disabled>SAVE</button>
+                                                </div>
+                                                <div align='right' style='float:right;'>
+                                                    <button id='deletePat' disabled>DELETE</button>
+                                                </div>
+                                                <div align='right' style='float:left;'>
+                                                    <button id='cancelPat' disabled>Cancel</button>
+                                                </div>
+                                            </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>";
                 if($L >= 3){
                     echo "                    
                     <div class='grid-item'>
@@ -293,6 +376,6 @@
 <script src="medicationManage.js"></script>
 <script src="RegimeManage.js"></script>
 
-<!-- <script src="patientManage.js"></script> -->
+<script src="patientManage.js"></script>
 
 </html>

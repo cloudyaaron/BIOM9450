@@ -134,8 +134,8 @@
                     $r1[] = $regterm;
                 }
                 print(json_encode( $r1));
-
             }
+
             // if ask for a entry detail
             if($_POST['Action']=="Ask"){
                 $rID = $_POST['RegimeID'];
@@ -190,8 +190,95 @@
 
             }
             die();
-        }elseif($_POST['Type'] == 'Patients'){
-            print(json_encode(  array("Type"=>"Patients") ));
+        }
+        if($_POST['Type'] == 'Patients'){
+            http_response_code(200);
+            header('Content-type: application/json');
+
+            // if ask all entry
+            if($_POST['Action']=="ALL"){
+                $sql_query = "SELECT * FROM [Patients]";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                $r1 = array();
+                while (odbc_fetch_row($result)) {
+                    $PatientID = odbc_result($result,"PatientID");
+                    $FirstName = odbc_result($result,"FirstName");
+                    $LastName = odbc_result($result,"LastName");
+                    $Age = odbc_result($result,"Age");
+                    $Gender = odbc_result($result,"Gender");
+                    $Description = odbc_result($result,"Description");
+                    $Photo = odbc_result($result,"Photo");
+
+                    $patterm = array(
+                        "id" => $PatientID,
+                        "FirstName" => $FirstName,
+                        "LastName" => $LastName,
+                        "Age" => $Age,
+                        "Gender" => $Gender,
+                        "Description" => $Description,
+                        "Photo" => $Photo,
+
+                    );
+                    $r2[] = $patterm;
+                }
+                print(json_encode( $r2));
+            }
+
+
+            // if ask for a entry detail
+            if($_POST['Action']=="Ask"){
+                $pID = $_POST['PatientID'];
+                $sql_query = "SELECT * FROM [Patients] WHERE `PatientID` = $pID";
+                
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                $r = odbc_fetch_array($result);
+                print(json_encode( $r ));
+
+            }
+
+            // if add or update
+            if ($_POST['Action']=="Save") {
+                $ln = $_POST['LastName'];
+                $fn = $_POST['FirstName'];
+
+                $pID = intval( $_POST['PatientID']);
+                $pd = $_POST['Description'];
+
+                $Age = intval($_POST['Age']);
+                $Gender = $_POST['Gender'];
+                print(json_encode( $_POST ));
+
+
+                // indicates a brand new terms 
+                if ($_POST['PatientID'] == "") {
+                    $sql_insert = "INSERT INTO [Patients]
+                    (`FirstName`,`LastName`,`Age`,`Gender`,`Description`)
+                    VALUES ('$fn','$ln',$Age,'$Gender','$pd')";
+                    $result = odbc_exec($conn,$sql_insert) or die(odbc_errormsg());
+                } elseif($_POST['PatientID']){
+                    $sql_update = "UPDATE [Patients]
+                    SET `FirstName` = '$fn',`LastName` = '$ln',
+                    `Age` = $Age,`Gender` = '$Gender',`Description` = '$pd'
+                    WHERE  `PatientID` = $pID";
+                    $result = odbc_exec($conn,$sql_update) or die(odbc_errormsg());
+                }
+                print(json_encode( $_POST ));
+
+            }
+
+            // If deleted
+            if ($_POST['Action']=="Delete") {
+                $pID = intval($_POST['PatientID']);
+
+                // delete by id
+                $sql_delete = "DELETE FROM [Patients] WHERE `PatientID` = $pID";
+                $result = odbc_exec($conn,$sql_delete) or die(odbc_errormsg());
+                
+                print(json_encode( $_POST ));
+
+            }
+
+            die();
         }else{
             http_response_code(400);
 

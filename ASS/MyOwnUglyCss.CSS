@@ -347,7 +347,6 @@ https://www.w3schools.com/css/css_tooltip.asp */
 .column {
 float: left;
 padding: 10px;
-height: 300px; 
 }
 
 .left {
@@ -356,6 +355,16 @@ height: 300px;
 
 .right {
     width: 70%;
+}
+
+.left-s {
+    width: 40%;
+}
+
+.right-s {
+    float: right;
+
+    width: 50%;
 }
 
 .row:after {

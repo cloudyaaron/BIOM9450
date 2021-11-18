@@ -54,6 +54,9 @@ window.onclick = function(event) {
   if (event.target == regimesmodal) {
     regimesmodal.style.display = "none";
   }
+  if (event.target == patientsmodal) {
+    patientsmodal.style.display = "none";
+  }
 }
 
 // add evenet listener to every medications
@@ -201,6 +204,7 @@ saveMedButton.onclick = function(event) {
   }
   saveMedButton.disabled = true
   currentMed.disabled = false
+  cancelMedButton.disabled = true
 }
 
 // delete current term

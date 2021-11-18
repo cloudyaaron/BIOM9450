@@ -216,6 +216,7 @@ saveRegButton.onclick = function(event) {
   }
   saveRegButton.disabled = true
   currentReg.disabled = false
+  cancelRegButton.disabled  = true
 }
 
 // delete current term
