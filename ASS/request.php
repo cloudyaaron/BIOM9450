@@ -45,14 +45,15 @@
                     $result = odbc_exec($conn,$sql_insert) or die(odbc_errormsg());
                 } elseif($_POST['MedicationID']){
                     $sql_update = "UPDATE [Medications]
-                    (`MedicationName`,`Prescription`,`Description`) VALUES ('$mn', $mp,'$md') 
+                    SET `MedicationName` = '$mn',`Prescription` = $mp,`Description` = '$md' 
                     WHERE  `MedicationID` = $mID";
                     $result = odbc_exec($conn,$sql_update) or die(odbc_errormsg());
                 }
                 print(json_encode( $_POST ));
 
             // If deleted
-            }elseif ($_POST['Action']=="Delete") {
+            }
+            if ($_POST['Action']=="Delete") {
                 $mID = intval($_POST['MedicationID']);
 
                 // delete by id
@@ -61,12 +62,37 @@
                 
                 print(json_encode( $_POST ));
 
-            }elseif($_POST['Action']=="Ask"){
+            }
+
+            // if ask for a entry detail
+            if($_POST['Action']=="Ask"){
                 $mID = $_POST['MedicationID'];
                 $sql_query = "SELECT * FROM [Medications] WHERE `MedicationID` = $mID";
                 
                 $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
                 $r = odbc_fetch_array($result);
+                print(json_encode( $r ));
+
+            }
+
+            // if ask all entry
+            if($_POST['Action']=="ALL"){
+                $sql_query = "SELECT * FROM [Medications]";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                $r = array();
+                while (odbc_fetch_row($result)) {
+                    $medid = odbc_result($result,"MedicationID");
+                    $medname = odbc_result($result,"MedicationName");
+                    $medprescription = odbc_result($result,"Prescription");
+                    $meddescription = odbc_result($result,"Description");
+                    $term = array(
+                        "id" => $medid,
+                        "MedicationName" => $medname,
+                        "Prescription" => $medprescription,
+                        "Description" => $meddescription,
+                    );
+                    $r[] = $term;
+                }
                 print(json_encode( $r ));
 
             }
@@ -80,7 +106,7 @@
 
         }
         
-        odbc_close($conn);
+        // odbc_close($conn);
     }
 
 

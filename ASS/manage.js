@@ -4,9 +4,47 @@ let medicationsmodal = document.getElementById("medicationsModal");
 // Get the medication tab that opens the modal
 var medicationsTab = document.getElementById("medications");
 
+// dynymic refresh the page
+function refreshMed() {
+  var medlist = document.getElementById('meds');
+  var totalMed = document.getElementById('totalMed');
+
+  medlist.innerHTML = ""
+
+  fetch('request.php',{
+    method:'post',
+    body: JSON.stringify({
+      "Type":"Medications",
+      "Action":"ALL",
+      "MedicationID":medID,
+  })
+    }).then(res=> res.json())
+    .then(data =>{
+      
+      if (data != false) {
+        data.forEach(element => {
+          var selectChild = document.createElement('option')
+          selectChild.setAttribute("value",element['id'])
+          selectChild.innerText = element['MedicationName']
+          medlist.appendChild(selectChild)
+          totalMed.innerText = data.length;
+        });
+      }else{
+        alert('Database internal error')
+
+      }
+    }
+
+    );
+}
+
+refreshMed();
+
+
 // When the user clicks the button, open the modal 
 medicationsTab.onclick = function() {
     medicationsmodal.style.display = "block";
+
 }
 
 // When the user clicks anywhere outside of the modal, close it
@@ -47,38 +85,10 @@ function unlockMedPanelButtons(params) {
 var medID = ""
 
 
+
+
 // get detail of meds to editor panel
 getMedButton.onclick = function(event) {
-  // let exist = false
-  // let index = 0
-  // for(let element of meds){
-  //   if (element['MedicationName'] === currentMed.value) {
-  //     exist = true
-  //     console.log(index)
-  //     break;
-  //   }
-  //   index = index + 1
-  // };
-
-  // // change editor panel
-  // if (exist) {
-  //   unlockMedPanelButtons(false);
-  //   saveMedButton.disabled = true
-
-  //   medNameBox.value = meds[index]['MedicationName']
-  //   if (meds[index]['Prescription']=='0') {
-  //     prescriptionBox.checked = false
-  //   }else{
-  //     prescriptionBox.checked = true
-  //   }
-  //   descriptionText.value = meds[index]['Description']
-  // }else{
-  //   alert("Input term is not exist in current database")
-  //   medNameBox.value = ""
-  //   prescriptionBox.checked = false
-  //   descriptionText.value = ""
-  //   exist = false
-  // }
 
   medID = currentMed.value
   fetch('request.php',{
@@ -92,8 +102,6 @@ getMedButton.onclick = function(event) {
     .then(data =>{
       
       if (data != false) {
-
-        console.log(data)
         medNameBox.value = data['MedicationName']
         prescriptionBox.checked = data['Presctiption']
         descriptionText.value = data['Description']
@@ -113,12 +121,14 @@ getMedButton.onclick = function(event) {
 addMedButton.onclick = function(event){
   unlockMedPanel(false);
   unlockMedPanelButtons(false);
+  currentMed.value= ""
   medNameBox.value = ""
   prescriptionBox.checked = false
   descriptionText.value = ""
 
   deleteMedButton.disabled = true
   editMedButton.disabled = true
+  currentMed.disabled = true
 
 }
 
@@ -128,12 +138,14 @@ editMedButton.onclick = function(event) {
   unlockMedPanel(false);
   editMedButton.disabled = true
   saveMedButton.disabled = false
+  currentMed.disabled = true
 
 }
 
 // save current term
 saveMedButton.onclick = function(event) {
   unlockMedPanel(true);
+  medID = currentMed.value
 
   if (medNameBox.value.trim()!='') {
     fetch('request.php',{
@@ -147,15 +159,22 @@ saveMedButton.onclick = function(event) {
         "Description":descriptionText.value,
     })
       }).then(res=> res.text())
-      .then(resp =>
-      console.log(resp)
-      );
+      .then(data =>{
+        if (data != false) {
+          refreshMed();
+          alert("Saved")
+          console.log(data)
+        }else{
+          alert("connection failed")
+        }
+
+      });
   
   }else{
     alert('Medication name can not be empty')
   }
   saveMedButton.disabled = true
-
+  currentMed.disabled = false
 }
 
 // delete current term
@@ -173,11 +192,19 @@ deleteMedButton.onclick = function(event) {
       "MedicationID":medID,
   })
     }).then(res=> res.text())
-    .then(resp =>
-    console.log(resp)
-    );
+    .then(data => {
+      if (data != false) {
+        refreshMed();
+        alert("Deleted")
 
+      }else{
+        alert("connection failed")
+      }
+    });
+
+  
   unlockMedPanel(true);
   unlockMedPanelButtons(true);
+  currentMed.disabled = false
 
 }

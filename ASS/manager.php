@@ -85,52 +85,11 @@
                                 <div class='modal-body'>
                                     <span>Medications ID<span>
                                     <input id='currentMed' list='meds' placeholder='Searching'>
-                                    <datalist id='meds'>"
-                                    ;
-                                
-                // Get medical database data
-                $conn = odbc_connect("ass",'','',SQL_CUR_USE_ODBC);
-
-                // report a error if connection failed
-                if(!$conn){
-                    echo "<div class='wr'>Internal Unkown Error, Plz contact us about this issue</div>";
-                }
-
-                // get medication data
-                $sql_query = "SELECT * FROM [Medications]";
-                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
-                $total_medications = 0;
-                $ALLMEDS = array();
-                while(odbc_fetch_row($result)){
-                    $medid = odbc_result($result,"MedicationID");
-                    $medname = odbc_result($result,"MedicationName");
-                    $pres = odbc_result($result,"Prescription");
-                    $des = odbc_result($result,"Description");
-                    echo "<option class='medicationList' value='$medid'>Name: $medname </option>";
-                    $total_medications = $total_medications+1;
-                    $term = array(
-                        "id" => $medid,
-                        "MedicationName" => $medname,
-                        "Prescription" => $pres,
-                        "Description" => $des,
-                    );
-                    $ALLMEDS[] = $term;
-
-                }
-                ?>;
-
-                <!-- pass to JS for later display -->
-                <script>
-                    var meds = <?php echo json_encode($ALLMEDS) ?>;
-                </script>
-
-                <!-- give editor panel a dynamic display -->
-                <?php
-                echo "</datalist>";
+                                    <datalist id='meds'> </datalist>";
                 echo "<button align='right' id='getMedication'>GET</button>";
 
                 echo "<div align='right' class='citetext' style='float:right'>
-                Current database has $total_medications entries 
+                Current database has <span id='totalMed'>  </span> entries 
                 <button id='addMedication' align='right'>Add NEW</button>
                 </div>";
             
@@ -178,7 +137,6 @@
                             </div>
                         </div>
                     </div>";
-                odbc_close($conn); 
 
 
                 // Regieme----------------------------------------------------
