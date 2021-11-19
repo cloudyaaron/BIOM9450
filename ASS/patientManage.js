@@ -61,6 +61,7 @@ var lastNameBox = document.getElementById('lastName');
 var descriptionPat = document.getElementById('PatientDescription');
 var AgeBox = document.getElementById('Age');
 var GenderBox = document.getElementById('Gender');
+var patientPhoto = document.getElementById('pImage');
 
 // unlock the panel
 function unlockPatPanel(params) {
@@ -69,6 +70,9 @@ function unlockPatPanel(params) {
   descriptionPat.disabled = params
   AgeBox.disabled = params
   GenderBox.disabled = params
+  if (params == true) {
+    patientPhoto.setAttribute('src','ServiceUNSW.png')
+  }
 
 }
 
@@ -114,6 +118,7 @@ getPatButton.onclick = function(event) {
           savePatButton.disabled = true
           unlockPatPanel(true);
           currentPat.disabled = false
+          patientPhoto.setAttribute('src',data['Photo'])
 
         }else{
           alert('Not exist')

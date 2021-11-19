@@ -267,7 +267,7 @@
                                             </div>
 
                                             <div class='column right-s'>
-                                                <img src='ServiceUNSW.png' alt='Service UNSW' width='200' height='200' >
+                                                <img id='pImage' src='ServiceUNSW.png' alt='Service UNSW' width='200' height='200' >
                                             </div>
                                         </div>
                                             <div class='grid-container'>
@@ -279,7 +279,7 @@
                                                 <div class='grid-item-s'>
                                                     <span>Gender</span>
                                                     <br>
-                                                    <select id=Gender>
+                                                    <select id=Gender disabled>
                                                         <option value='Male'>
                                                             Male
                                                         </option>
