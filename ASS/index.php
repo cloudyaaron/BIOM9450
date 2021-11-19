@@ -47,9 +47,14 @@
             $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
             $result_array = odbc_fetch_array($result);
             odbc_close($conn); 
-            $u = $result_array['UserName'];
-            if ($t == $result_array['Token']) {
-                header("refresh:0; url=main.php");
+            if (empty($result_array)) {
+                setcookie('token', null, -1, '/'); 
+
+            }else{
+                $u = $result_array['UserName'];
+                if ($t == $result_array['Token']) {
+                    header("refresh:0; url=main.php");
+                }
             }
         }
     ?>

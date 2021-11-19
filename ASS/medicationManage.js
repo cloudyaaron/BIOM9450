@@ -57,6 +57,9 @@ window.onclick = function(event) {
   if (event.target == patientsmodal) {
     patientsmodal.style.display = "none";
   }
+  if (event.target == sessionModal) {
+    sessionModal.style.display = "none";
+  }
 }
 
 // add evenet listener to every medications

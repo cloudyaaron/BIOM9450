@@ -41,14 +41,22 @@
             WHERE `Token` = '$t'";
             $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
             $result_array = odbc_fetch_array($result);
-            odbc_close($conn); 
-            if ($t == $result_array['Token']) {
-                $L = $result_array['Level'];
-                $valid = true;
-                $user = $result_array['UserName'];
-            }else{
+            odbc_close($conn);
+
+            if (empty($result_array)) {
+                setcookie('token', null, -1, '/'); 
                 $valid = false;
-            }  
+
+            }else{
+                if ($t == $result_array['Token']) {
+                    $L = $result_array['Level'];
+                    $valid = true;
+                    $user = $result_array['UserName'];
+                }else{
+                    $valid = false;
+                }  
+            }
+
         } else{
             $valid = false;
         }
@@ -316,16 +324,53 @@
                         </div>";
                 if($L >= 3){
                     echo "                    
-                    <div class='grid-item'>
-                        <div class='tooltip'>
-                            Practitioner
-                        <span class='tooltiptext'>level 3 Exclusive</span>
-                        </div>
-                    </div>
                         <div class='grid-item'>
+                            <div class='tooltip'>
+                                Practitioner
+                            <span class='tooltiptext'>No need to implement as declared in documentation</span>
+                            </div>
+                        </div>
+                        <div  id='Session' class='grid-item'>
                             <div class='tooltip'>
                                 login session
                                 <span class='tooltiptext'>level 3 Exclusive</span>
+
+                                <!-- The Modal -->
+                                <div id='sessionModal' class='modal'>
+        
+                                    <!-- Modal content -->
+                                        <div class='modal-content'>
+                                            <div class='modal-header'>
+                                                <h4>Current login session</h4>
+                                            </div>
+                                            <div class='modal-body'>
+                                                <table id='sessionTable' class='fulltable'>
+                                                    <tr>
+                                                        <th>
+                                                            PID
+                                                        </th>
+                                                        <th>
+                                                            User Name
+                                                        </th>
+                                                        <th>
+                                                            Full Name
+                                                        </th>
+                                                        <th>
+                                                            Token
+                                                        </th>
+                                                        <th>
+                                                            Valid From
+                                                        </th>
+                                                        <th>
+                                                            Action
+                                                        </th>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>";
@@ -377,5 +422,6 @@
 <script src="RegimeManage.js"></script>
 
 <script src="patientManage.js"></script>
+<script src="sessionManage.js"></script>
 
 </html>

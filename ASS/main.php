@@ -123,12 +123,19 @@
                     $result_array = odbc_fetch_array($result);
                     odbc_close($conn); 
                     
-                    if ($t == $result_array['Token']) {
-                        $valid = true;
-                        $user = $result_array['UserName'];
-                        $L = $result_array['Level'];
+                    if (empty($result_array)) {
+                        setcookie('token', null, -1, '/'); 
+                        $valid = false;
 
+                    }else{
+                        if ($t == $result_array['Token']) {
+                            $valid = true;
+                            $user = $result_array['UserName'];
+                            $L = $result_array['Level'];
+
+                        }
                     }
+
                 // invalid visit show error
                 }else{
                     $valid = false;

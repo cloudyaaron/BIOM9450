@@ -279,6 +279,59 @@
             }
 
             die();
+        }
+        if ($_POST['Type'] == 'Session') {
+
+            http_response_code(200);
+            header('Content-type: application/json');
+
+            // if ask all entry
+            if($_POST['Action']=="ALL"){
+                $sql_query = "SELECT StatusID, LoginStatus.PractitionerID, Token, LastLoginTime,UserName, FirstName,LastName 
+                FROM [LoginStatus] INNER JOIN [Practitioner] ON LoginStatus.PractitionerID = Practitioner.PractitionerID";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                $r1 = array();
+                while (odbc_fetch_row($result)) {
+                    $StatusID = odbc_result($result,"StatusID");
+
+                    $PractitionerID = odbc_result($result,"PractitionerID");
+                    $FirstName = odbc_result($result,"FirstName");
+                    $LastName = odbc_result($result,"LastName");
+                    $Token = odbc_result($result,"Token");
+                    $LastLoginTime = odbc_result($result,"LastLoginTime");
+                    $UserName = odbc_result($result,"UserName");
+
+
+                    $sesterm = array(
+                        "id" => $StatusID,
+                        "PractitionerID" => $PractitionerID,
+
+                        "FirstName" => $FirstName,
+                        "LastName" => $LastName,
+                        "Token" => $Token,
+                        "LastLoginTime" => $LastLoginTime,
+                        "UserName" => $UserName,
+
+                    );
+                    $r2[] = $sesterm;
+                }
+                print(json_encode( $r2));
+            }
+
+            // If deleted
+            if ($_POST['Action']=="Delete") {
+                $sID = intval($_POST['StatusID']);
+
+                // delete by id
+                $sql_delete = "DELETE FROM [LoginStatus] WHERE `StatusID` = $sID";
+                $result = odbc_exec($conn,$sql_delete) or die(odbc_errormsg());
+                
+                print(json_encode( $_POST ));
+
+            }
+
+            die();
+        
         }else{
             http_response_code(400);
 

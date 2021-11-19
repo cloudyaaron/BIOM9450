@@ -9,7 +9,7 @@ getPatientbutton.onclick = function(event) {
 
 let modal = document.getElementsByClassName("modal");
 
-// Get the medication tab that opens the modal
+// Get the tab that opens the modal
 var tab = document.getElementsByClassName("grid-item-main");
 
 
