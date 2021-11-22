@@ -216,9 +216,62 @@
                     <!-- Modal content -->
                         <div class='modal-content'>
                             <div class='modal-header'>
-                                <h4 id='modal title $i'>$cdate</h4>
+                                <h4 id='modal title $cdate'>$cdate</h4>
                             </div>
                             <div class='modal-body'>
+                                <span>Patients ID<span>
+                                <input id='currentPatient' list='patient' placeholder='Searching'>
+                                <datalist id='patient'> </datalist>
+                                <button align='right' id='getPatient'>GET</button>
+                                <div align='right' class='citetext' style='float:right'>
+                                    Current database has 
+                                    <span id='totalPatient'>  </span> entries 
+                                    <button id='addPatient' align='right'>Add NEW</button>
+                                </div>
+
+                                <hr>
+
+                                <!-- the editor panel start here--------->
+                                <div>
+                                    <span>Patient Name</span>
+                                    <br>
+                                    <input type='text' id='patientName' size='50' disabled=true>
+                                    <br>
+                                    <br>
+
+                                    <span>Medication</span>
+                                    <br>
+                                    <input type='text' id='medicationsPrescription' size='50' disabled=true>
+                                    <br>
+                                    <br>
+
+                                    <span>Diet Regime</span>
+                                    <br>
+                                    <input type='text' id='dietRegime' size='50' disabled=true>
+                                    <br>
+                                    <br>
+
+                                    <span>Details</span>
+                                    <br>
+                                    <textarea rows='5' cols='100' id='patientDetails' disabled=false></textarea>
+
+                                    <hr>
+
+                                    <div>
+                                        <div align='left' style='float:left;'>
+                                            <button id='editMed' disabled>EDIT</button>
+                                        </div>
+                                        <div align='right' style='float:left;'>
+                                            <button id='saveMed' disabled>SAVE</button>
+                                        </div>
+                                        <div align='right' style='float:right;'>
+                                            <button id='deleteMed' disabled>DELETE</button>
+                                        </div>
+                                        <div align='right' style='float:left;'>
+                                            <button id='cancelMed' disabled>Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>";
