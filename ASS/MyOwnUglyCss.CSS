@@ -372,3 +372,52 @@ padding: 10px;
     display: table;
     clear: both;
 }
+
+.trigger {
+    width: 100%;
+    overflow:auto;
+    font-size: 10;
+    cursor: pointer;
+}
+
+.arrangetable{
+    width: 100%;
+    overflow:auto;
+    font-size: 10;
+}
+
+
+.arrangetable thead{
+    text-align: left;
+    background-color: #3C6E71;
+    color: #FFFFFF;
+}
+
+.arrangetable .firstcol{
+    text-align: center;
+    border-right: double #3C6E71;
+    border-left: double #3C6E71;
+
+}
+
+.arrangetable td:hover{
+    background-color: #284B63;
+    color: #FFFFFF;
+}
+
+.item {
+    position:relative;
+    padding-top:20px;
+    display:inline-block;
+}
+.badge{
+    position: absolute;
+    right:10px;
+    top:20px;
+    background:red;
+    text-align: center;
+    border-radius: 30px 30px 30px 30px;
+    color:white;
+    padding:5px 10px;
+    font-size:20px;
+}

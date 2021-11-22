@@ -1,4 +1,4 @@
-// get current patient data
+// get main page elements
 let patient = document.getElementById("currentP");
 let getPatientbutton = document.getElementById("getPatient");
 
@@ -7,10 +7,48 @@ let patientDesBox = document.getElementById("patientDes");
 let patientGenderBox = document.getElementById("patientGender");
 let patientAgeBox = document.getElementById("patientAge");
 let patientPhoto = document.getElementById("pImage");
+let patientIDBox = document.getElementById("patientID");
+
+// get date box
+let dateBox = document.getElementById("pickedDate");
+
+// onchange of the date box refresh the page
+dateBox.onchange = function(event) {
+    refreshCalendar(event.target.value)
+}
+
+function refreshCalendar(date) {
+    console.log(date)
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    var startday = new Date(date)
+
+    for (let index = 0; index < 7; index++) {
+
+        // clear current calendar
+        var dayTable = document.getElementById("table "+index);
+        dayTable.innerHTML = ''
+
+        // create new calendar
+        var newDaytable = document.createElement('tbody')
+
+        var headerRow = document.createElement('tr')
+        var headerContent = document.createElement('th')
+        day = new Date(date)
+        day.setDate(day.getDate()+index)
+        // console.log(new Date(day))
+        headerContent.innerText = day
+        headerRow.appendChild(headerContent)
+        newDaytable.appendChild(headerRow)
+        dayTable.appendChild(newDaytable)
+
+        
+
+    }
+}
+
 
 var PID = ""
 getPatientbutton.onclick = function(event) {
-    console.log(patient.value)
     patID = patient.value
     var re = /^\d+$/;
   
@@ -33,6 +71,9 @@ getPatientbutton.onclick = function(event) {
             patientDesBox.innerText = data['Description']
             patientGenderBox.innerText = data['Gender']
             patientAgeBox.innerText = data['Age']
+            patientIDBox.value = data['PatientID']
+            patientIDBox.innerText = data['PatientID']
+
             if (data['Photo'] == null) {
                 patientPhoto.setAttribute('src',"./ServiceUNSW.png")
  
@@ -54,7 +95,7 @@ getPatientbutton.onclick = function(event) {
 let modal = document.getElementsByClassName("modal");
 
 // Get the tab that opens the modal
-var tab = document.getElementsByClassName("grid-item-main");
+var tab = document.getElementsByClassName("trigger");
 
 
 for (let index = 0; index < 7; index++) {

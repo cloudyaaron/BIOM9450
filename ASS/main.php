@@ -168,8 +168,10 @@
                     <hr>
                     <div>
                     <h3> Details</h3>
+                        <b>Patient ID: </b><b id='patientID'> </b>
+                        <br>
                         <img id='pImage' src='ServiceUNSW.png' alt='Service UNSW' width='200' height='200' >
-
+                        <br>
                         <b>Gender: </b><p id='patientGender'> </p>
                         <b>Age: </b><p id='patientAge'> </p>
                         <b>Description: </b><p id='patientDes'> </p>
@@ -179,35 +181,55 @@
 
                 </div>
                 <div class='column right' style='background-color:#bbb;'>
-                    <h2>Arrangement</h2>";
-                    echo "<div class='grid-container-main'>";
-                    $start = date('m/d l');
-                    for ($i=0; $i < 7; $i++) { 
-                        echo "
-                        <div id='$i' class='grid-item-main'> $i";
-                        
-                        echo"<!-- The Modal -->
-                            <div class='modal'>
+                    <div >
+                        <div >
+                            <h2>Arrangement</h2>
+                        </div>
+                        <div style='float:right;'>
+                            <input id='pickedDate' type='date'>
 
-                            <!-- Modal content -->
-                                <div class='modal-content'>
-                                    <div class='modal-header'>
-                                        <h4>$i</h4>
-                                    </div>
-                                    <div class='modal-body'>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>";
+                echo"<br>";
+
+                echo"<hr>";
+                echo "<table id='calendar' class='arrangetable'>";
+                $start = date('y/m/d');
+                
+                echo "<tr>";
+                    
+                for ($i=0; $i < 7; $i++) { 
+                    $cdate = date('m/d l',mktime(0, 0, 0, date("m")  , date("d")+$i, date("Y")));
+                    echo "<th>";
+                    echo "<table id='table $i' class='trigger'>
+                        <tr>
+                            <th>
+                                $cdate
+                            </th>
+                        </tr>
+                    </table>
+
+                    ";
+                    echo"<!-- The Modal -->
+                    <div id='modal $i' class='modal'>
+
+                    <!-- Modal content -->
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <h4 id='modal title $i'>$cdate</h4>
+                            </div>
+                            <div class='modal-body'>
                             </div>
                         </div>
-                    ";
-                    }
-                    
-                    
+                    </div>";
+                    echo "</th>";
+                }
                 echo "
-                </div>
-              </div>";
-                
-                echo "";
+                    </tr>
+
+
+                </table>";
+              echo "</div>";
 
             // show reject info
             }else{
