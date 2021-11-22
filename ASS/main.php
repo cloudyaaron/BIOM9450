@@ -170,11 +170,11 @@
                     <h3> Details</h3>
                         <b>Patient ID: </b><b id='patientID'> </b>
                         <br>
-                        <img id='pImage' src='ServiceUNSW.png' alt='Service UNSW' width='200' height='200' >
+                        <img id='pImage' src='Patients/Mrs Sally Smith.jpg' alt='Mrs Sally Smith' width='80' height='120' >
                         <br>
-                        <b>Gender: </b><p id='patientGender'> </p>
-                        <b>Age: </b><p id='patientAge'> </p>
-                        <b>Description: </b><p id='patientDes'> </p>
+                        <b>Gender: </b><p id='patientGender'> Female </p>
+                        <b>Age: </b><p id='patientAge'> 86 </p>
+                        <b>Description: </b><p id='patientDes'> From Sydney </p>
 
                     </div>
 
