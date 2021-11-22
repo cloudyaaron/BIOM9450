@@ -36,18 +36,22 @@ function refreshCalendar(date) {
         day = new Date(date)
         day.setDate(day.getDate()+index)
         // console.log(new Date(day))
-        headerContent.innerText = day
+        var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        let display = day.getFullYear()+"/" + (day.getMonth()+1) + "/"+day.getDate()+" "+days[day.getDay()] 
+        let shortdisplay = day.getFullYear()+"/" + (day.getMonth()+1) + "/"+day.getDate()
+
+        headerContent.innerText = display
         headerRow.appendChild(headerContent)
         newDaytable.appendChild(headerRow)
         dayTable.appendChild(newDaytable)
 
-        
+        dayTable.setAttribute('data-value',shortdisplay)
 
     }
 }
 
 
-var PID = ""
+var patID = ""
 getPatientbutton.onclick = function(event) {
     patID = patient.value
     var re = /^\d+$/;
@@ -92,35 +96,32 @@ getPatientbutton.onclick = function(event) {
 }
 
 
-let modal = document.getElementsByClassName("modal");
+let modal = document.getElementsByClassName("modal")[0];
 
 // Get the tab that opens the modal
 var tab = document.getElementsByClassName("trigger");
 
 
 for (let index = 0; index < 7; index++) {
-    // When the user clicks the button, open the modal 
-    tab[index].onclick = function() {
-        modal[index].style.display = "block";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        // console.log(event.target)
-
-        if (event.target == modal[0] || event.target == modal[1]||event.target == modal[2]||event.target == modal[3]||
-            event.target == modal[4]||event.target == modal[5]||event.target == modal[6]) {
-            modal[0].style.display = "none";
-            modal[1].style.display = "none";
-            modal[2].style.display = "none";
-            modal[3].style.display = "none";
-            modal[4].style.display = "none";
-            modal[5].style.display = "none";
-            modal[6].style.display = "none";
-
-        }
-    }
+  // When the user clicks the button, open the modal 
+  tab[index].onclick = function(event) {
+    modal.style.display = "block";
+    let date = event.target.parentNode.parentNode.parentNode
+    var mtitle = document.getElementById('modal title')
+    mtitle.innerText = event.target.innerText
+  }
 }
+
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  // console.log(event.target)
+
+  if (event.target == modal) {
+      modal.style.display = "none";
+  }
+}
+
 
 var patientSearchList = document.getElementById('plist')
 

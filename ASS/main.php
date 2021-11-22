@@ -199,9 +199,11 @@
                 echo "<tr>";
                     
                 for ($i=0; $i < 7; $i++) { 
-                    $cdate = date('m/d l',mktime(0, 0, 0, date("m")  , date("d")+$i, date("Y")));
+                    $cdate = date('Y/m/d l',mktime(0, 0, 0, date("m")  , date("d")+$i, date("Y")));
+                    $ddate = date('Y/m/d',mktime(0, 0, 0, date("m")  , date("d")+$i, date("Y")));
+
                     echo "<th>";
-                    echo "<table id='table $i' class='trigger'>
+                    echo "<table id='table $i' data-value='$ddate' class='trigger'>
                         <tr>
                             <th>
                                 $cdate
@@ -210,20 +212,21 @@
                     </table>
 
                     ";
-                    echo"<!-- The Modal -->
-                    <div id='modal $i' class='modal'>
 
-                    <!-- Modal content -->
-                        <div class='modal-content'>
-                            <div class='modal-header'>
-                                <h4 id='modal title $i'>$cdate</h4>
-                            </div>
-                            <div class='modal-body'>
-                            </div>
-                        </div>
-                    </div>";
-                    echo "</th>";
                 }
+                echo"<!-- The Modal -->
+                <div id='modal' class='modal'>
+
+                <!-- Modal content -->
+                    <div class='modal-content'>
+                        <div class='modal-header'>
+                            <h4 id='modal title'>$cdate</h4>
+                        </div>
+                        <div class='modal-body'>
+                        </div>
+                    </div>
+                </div>";
+                echo "</th>";
                 echo "
                     </tr>
 
