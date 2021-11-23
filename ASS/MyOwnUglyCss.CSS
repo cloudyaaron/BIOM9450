@@ -378,12 +378,14 @@ padding: 10px;
     overflow:auto;
     font-size: 10;
     cursor: pointer;
+    vertical-align: baseline;
 }
 
 .arrangetable{
     width: 100%;
     overflow:auto;
     font-size: 10;
+    vertical-align: baseline;
 }
 
 
@@ -405,19 +407,22 @@ padding: 10px;
     color: #FFFFFF;
 }
 
-.item {
-    position:relative;
-    padding-top:20px;
-    display:inline-block;
+
+.bcell{
+    border: solid 2px #284B63;
 }
-.badge{
-    position: absolute;
-    right:10px;
-    top:20px;
-    background:red;
-    text-align: center;
-    border-radius: 30px 30px 30px 30px;
-    color:white;
-    padding:5px 10px;
-    font-size:20px;
+
+.regime{
+    text-decoration: underline green;
+    font: 10;
+    border: dotted 1px #284B63;
+
+
+}
+
+.medication{
+    text-decoration: underline blue;
+    font: 10;
+    border: dashed 1px #284B63;
+
 }

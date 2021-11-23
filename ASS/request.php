@@ -331,7 +331,71 @@
             }
 
             die();
-        
+        }
+
+        // ask for any arrangement for regime or medications
+        if ($_POST['Type'] == 'Arrangement') {
+
+            http_response_code(200);
+            header('Content-type: application/json');
+
+            // return results by date and patient
+            if ($_POST['Action']=="ShortAsk") {
+                $pID = intval($_POST['PatientID']);
+                $date = str_replace('\\',"",$_POST['Date']);
+
+                $answer = array(
+                    "morning"=>array(),
+                    "afternoon"=>array(),
+                    "evening"=>array(),
+                );
+                if (!$pID) {
+                    print(json_encode( $answer));
+                }else{
+
+                    $round = array("","morning","afternoon","evening");
+                    for ($i=1; $i <= 3; $i++) { 
+
+                        // first get regime
+                        $sql_query = "SELECT * FROM [DietRegimeRecords]
+                        INNER JOIN [DietRegime] ON
+                        DietRegimeRecords.RegimeID = DietRegime.RegimeID
+                        WHERE `PatientID` = $pID AND `Day` = #$date#
+                        AND `RoundID`= $i";
+                        $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                        // $answer = array();    
+                        while (odbc_fetch_row($result)) {
+                            $term = array();
+                            $dr = odbc_result($result,'RegimeName');
+                            $term['name']=$dr;
+                            $term['type']='regime';
+                            $answer[$round[$i]][] = $term;
+                        }
+
+                        // then get medications
+                        $sql_query = "SELECT * FROM [MedicationRecords]
+                        INNER JOIN [Medications] ON
+                        MedicationRecords.MedicationID = Medications.MedicationID
+                        WHERE `PatientID` = $pID AND `Day` = #$date#
+                        AND `RoundID`= $i";
+                        $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                        // $answer = array();    
+                        while (odbc_fetch_row($result)) {
+                            $term = array();
+                            $dr = odbc_result($result,'MedicationName');
+                            $term['name']=$dr;
+                            $term['type']='medication';
+                            $answer[$round[$i]][] = $term;
+                        }
+                    }
+
+                    print(json_encode( $answer ));
+                }
+                //
+
+            }
+
+            die();
         }else{
             http_response_code(400);
 

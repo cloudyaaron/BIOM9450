@@ -17,10 +17,9 @@ dateBox.onchange = function(event) {
     refreshCalendar(event.target.value)
 }
 
+// refreshing the calendar
 function refreshCalendar(date) {
     console.log(date)
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    var startday = new Date(date)
 
     for (let index = 0; index < 7; index++) {
 
@@ -29,23 +28,67 @@ function refreshCalendar(date) {
         dayTable.innerHTML = ''
 
         // create new calendar
-        var newDaytable = document.createElement('tbody')
+        // var newDaytable = document.createElement('tbody')
 
         var headerRow = document.createElement('tr')
         var headerContent = document.createElement('th')
         day = new Date(date)
         day.setDate(day.getDate()+index)
+
         // console.log(new Date(day))
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         let display = day.getFullYear()+"/" + (day.getMonth()+1) + "/"+day.getDate()+" "+days[day.getDay()] 
-        let shortdisplay = day.getFullYear()+"/" + (day.getMonth()+1) + "/"+day.getDate()
+        let shortdisplay = (day.getMonth()+1) + '/'+day.getDate()+'/'+day.getFullYear()
 
         headerContent.innerText = display
         headerRow.appendChild(headerContent)
-        newDaytable.appendChild(headerRow)
-        dayTable.appendChild(newDaytable)
-
+        // newDaytable.appendChild(headerRow)
         dayTable.setAttribute('data-value',shortdisplay)
+
+
+        // asking api the dispensing info
+
+        fetch('request.php',{
+          method:'post',
+          body: JSON.stringify({
+            "Type":"Arrangement",
+            "Action":"ShortAsk",
+            "PatientID":patID,
+            "Date":shortdisplay,
+        })
+          }).then(res=> res.json())
+          .then(data =>{
+            // console.log(data)
+            if (data != false) {
+              for (let key in data) {
+                var row = document.createElement('tr')
+                var rowcontent = document.createElement('td')
+                rowcontent.innerText = key
+                row.appendChild(rowcontent)
+                rowcontent.className = 'bcell'
+                var dayTable = document.getElementById("table "+index);
+                dayTable.appendChild(row)
+                for (let k in data[key]) {
+                  var termrow = document.createElement('tr')
+                  var termrowcontent = document.createElement('td')
+                  termrowcontent.innerText = data[key][k]['name']
+                  termrow.appendChild(termrowcontent)
+                  termrowcontent.className = data[key][k]['type']
+                  termrow.className = data[key][k]['type']
+                  dayTable.appendChild(termrow)
+                }
+              }
+
+            }else{
+              alert('Not exist')
+      
+            }
+          }
+      
+        );
+
+        dayTable.appendChild(headerRow)
+
 
     }
 }
@@ -69,7 +112,7 @@ getPatientbutton.onclick = function(event) {
       })
         }).then(res=> res.json())
         .then(data =>{
-          console.log(data)
+          // console.log(data)
           if (data != false) {
             patientNameBox.innerText = data['FirstName'] +' '+ data['LastName']
             patientDesBox.innerText = data['Description']
@@ -92,6 +135,15 @@ getPatientbutton.onclick = function(event) {
         }
     
       );
+
+
+      dateBox.disabled = false
+      let day = new Date()
+      let shortdisplay = day.getFullYear()+"-" + (day.getMonth()+1) + "-"+day.getDate()
+
+      dateBox.value = shortdisplay
+      refreshCalendar(dateBox.value)
+
     }
 }
 
@@ -106,9 +158,10 @@ for (let index = 0; index < 7; index++) {
   // When the user clicks the button, open the modal 
   tab[index].onclick = function(event) {
     modal.style.display = "block";
-    let date = event.target.parentNode.parentNode.parentNode
+    let date = event.target.parentNode.parentNode
+    // console.log(date)
     var mtitle = document.getElementById('modal title')
-    mtitle.innerText = event.target.innerText
+    mtitle.innerText = date.dataset.value
   }
 }
 
@@ -137,6 +190,7 @@ function refreshPatients(){
       })
         }).then(res=> res.json())
         .then(data =>{
+          // console.log(data)
           if (data != false) {
             data.forEach(element => {
               var selectChild = document.createElement('option')

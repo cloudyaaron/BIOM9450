@@ -186,7 +186,7 @@
                             <h2>Arrangement</h2>
                         </div>
                         <div style='float:right;'>
-                            <input id='pickedDate' type='date'>
+                            <input id='pickedDate' type='date' disabled>
 
                         </div>
                     </div>";
@@ -196,7 +196,7 @@
                 echo "<table id='calendar' class='arrangetable'>";
                 $start = date('y/m/d');
                 
-                echo "<tr>";
+                echo "<tr style='vertical-align: baseline;'>";
                     
                 for ($i=0; $i < 7; $i++) { 
                     $cdate = date('Y/m/d l',mktime(0, 0, 0, date("m")  , date("d")+$i, date("Y")));
@@ -204,11 +204,7 @@
 
                     echo "<th>";
                     echo "<table id='table $i' data-value='$ddate' class='trigger'>
-                        <tr>
-                            <th>
-                                $cdate
-                            </th>
-                        </tr>
+
                     </table>
 
                     ";
@@ -222,6 +218,16 @@
                             <h4 id='modal title'>$cdate</h4>
                         </div>
                         <div class='modal-body'>
+                            <div class='row'>
+                                <div class='column left-s'>
+                                    <h4>Regime</h4>
+                                    <hr>
+                                </div>
+                                <div class='column right-s'>
+                                    <h4>Medications</h4>
+                                    <hr>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>";
