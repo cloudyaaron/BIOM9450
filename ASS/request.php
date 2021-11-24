@@ -10,6 +10,8 @@
     // setup api
     }else{
 
+        
+
         $_POST = json_decode(file_get_contents('php://input'), true);
 
 
@@ -21,6 +23,15 @@
             echo "<div class='wr'>Internal Unkown Error, Plz contact us about this issue</div>";
         }
 
+        // get pratitionerID from cookie
+        $to = $_COOKIE['token'];
+        $sql_query = "SELECT * FROM [LoginStatus] WHERE `Token` ='$to'";
+        $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+        $currentPractitioner = 3;
+        while (odbc_fetch_row($result)) {
+            $currentPractitioner = odbc_result($result,"PractitionerID");
+        }
+        
         // Medication API
         if ($_POST['Type'] == 'Medications'){
             http_response_code(200);
@@ -339,7 +350,7 @@
             http_response_code(200);
             header('Content-type: application/json');
 
-            // return results by date and patient
+            // return short results by date and patient
             if ($_POST['Action']=="ShortAsk") {
                 $pID = intval($_POST['PatientID']);
                 $date = str_replace('\\',"",$_POST['Date']);
@@ -395,6 +406,87 @@
 
             }
 
+            // return all results by date and patient
+            if ($_POST['Action']=="Ask") {
+                $answer = array(
+                    'Regime' =>array(),
+                    'Medication'=>array()
+                );
+
+                $pID = intval($_POST['PatientID']);
+                $date = str_replace('\\',"",$_POST['Date']);
+
+                // first get regime
+                $sql_query = "SELECT * FROM (([DietRegimeRecords]
+                INNER JOIN [DietRegime] ON
+                DietRegimeRecords.RegimeID = DietRegime.RegimeID)
+                INNER JOIN [Status] ON
+                DietRegimeRecords.StatusID = Status.StatusID)
+                INNER JOIN [Round] ON
+                DietRegimeRecords.RoundID = Round.RoundID
+                WHERE `PatientID` = $pID AND `Day` = #$date#
+                ORDER BY DietRegimeRecords.RoundID";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                // $answer = array();    
+                while (odbc_fetch_row($result)) {
+                    $term = array();
+                    $drid = odbc_result($result,'DietRegimeRecordsID');
+                    $dr = odbc_result($result,'RegimeName');
+                    $drr = odbc_result($result,'RoundName');
+                    $drs = odbc_result($result,'StatusName');
+                    $drsid = odbc_result($result,'StatusID');
+
+                    $term['id']=$drid;
+                    $term['name']=$dr;
+                    $term['status']=$drs;
+                    $term['statusid']=$drsid;
+
+                    $term['round']=$drr;
+
+                    $answer['Regime'][] = $term;
+                }
+                print(json_encode( $answer ));
+
+            }
+
+            // handle regime add process
+            if ($_POST['Action']=="AddRegime") {
+                $pID = intval($_POST['PatientID']);
+                $RecordID = intval($_POST['RecordID']);
+                $StatusID = intval($_POST['StatusID']);
+                $date = $_POST['Date'];
+                $today = date("m/d/Y");
+                // if update
+                if ($_POST['RecordID']) {
+                    $sql_update = "UPDATE [DietRegimeRecords]
+                    SET `StatusID` = $StatusID, `LastModifiedDate` = $today,
+                    `PractitionerID` = $currentPractitioner
+                    WHERE  `DietRegimeRecordsID` = $RecordID";
+                    $result = odbc_exec($conn,$sql_update) or die(odbc_errormsg());
+
+                // if insert
+                }else{
+                    $RegimeID = intval($_POST['RegimeID']);
+                    $RoundID = intval($_POST['RoundID']);
+
+                    $sql_insert = "INSERT INTO [DietRegimeRecords]
+                    (`Day`,`RoundID`,`RegimeID`,`StatusID`,`PatientID`,`PractitionerID`,`LastModifiedDate`)
+                    VALUES (#$date#,$RoundID,$RegimeID,$StatusID,$pID,$currentPractitioner,$today)";
+                    $result = odbc_exec($conn,$sql_insert) or die(odbc_errormsg());
+                }
+
+                print(json_encode( $_POST ));
+            }
+
+            // handle regime add process
+            if ($_POST['Action']=="DeleteRegime") {
+                $RecordID = intval($_POST['RecordID']);
+
+                // delete by id
+                $sql_delete = "DELETE FROM [DietRegimeRecords] WHERE `DietRegimeRecordsID` = $RecordID";
+                $result = odbc_exec($conn,$sql_delete) or die(odbc_errormsg());
+                print(json_encode( $_POST ));
+            }
             die();
         }else{
             http_response_code(400);

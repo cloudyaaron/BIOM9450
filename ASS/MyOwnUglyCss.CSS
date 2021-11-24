@@ -403,7 +403,7 @@ padding: 10px;
 }
 
 .arrangetable td:hover{
-    background-color: #284B63;
+    background-color: #284b6363;
     color: #FFFFFF;
 }
 
@@ -425,4 +425,29 @@ padding: 10px;
     font: 10;
     border: dashed 1px #284B63;
 
+}
+
+.stable {
+    border-collapse: collapse;
+    width: 100%;
+    font: 6;
+}
+
+.stable th {
+    border: 1px solid #ddd;
+    padding: 2px;
+}
+.stable td{
+    border: 1px solid #ddd;
+    padding: 1px;
+    font: 6;
+}
+.stable tr:nth-child(even){background-color: #f2f2f2;}
+
+.stable tr:hover {background-color: #ddd;}
+
+.stable th {
+    text-align: left;
+    background-color: rgba(0, 128, 0, 0.664);
+    color: white;
 }

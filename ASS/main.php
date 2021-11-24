@@ -183,7 +183,7 @@
                 <div class='column right' style='background-color:#bbb;'>
                     <div >
                         <div >
-                            <h2>Arrangement</h2>
+                            <h2>Schedule</h2>
                         </div>
                         <div style='float:right;'>
                             <input id='pickedDate' type='date' disabled>
@@ -209,6 +209,12 @@
 
                     ";
                 }
+                echo "</th>";
+                echo "
+                    </tr>
+
+
+                </table>";
                 echo"<!-- The Modal -->
                 <div id='modal' class='modal'>
 
@@ -217,26 +223,47 @@
                         <div class='modal-header'>
                             <h4 id='modal title'>$cdate</h4>
                         </div>
+
                         <div class='modal-body'>
                             <div class='row'>
                                 <div class='column left-s'>
                                     <h4>Regime</h4>
+                                    <button style='float:right;' onclick='addNewRegime()'>&#10010;</button>
+
                                     <hr>
+                                    <table id='regimeTable' class='stable'>
+                                    </table>
                                 </div>
                                 <div class='column right-s'>
                                     <h4>Medications</h4>
+                                    
+                                    <button style='float:right;'>&#10010;</button>
                                     <hr>
+                                    <table id='medicationTable' class='stable'>
+                                        <tr>
+                                            <th>
+                                                medication Name
+                                            </th>
+                                            <th>
+                                                Round Time
+                                            </th>
+                                            <th>
+                                                Status
+                                            </th>
+                                            <th>
+                                                Dosage
+                                            </th>
+                                            <th>
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>";
-                echo "</th>";
-                echo "
-                    </tr>
 
-
-                </table>";
               echo "</div>";
 
             // show reject info

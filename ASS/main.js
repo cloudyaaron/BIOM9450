@@ -154,17 +154,302 @@ let modal = document.getElementsByClassName("modal")[0];
 var tab = document.getElementsByClassName("trigger");
 
 
+// binding the function when modal is opened
 for (let index = 0; index < 7; index++) {
   // When the user clicks the button, open the modal 
-  tab[index].onclick = function(event) {
-    modal.style.display = "block";
-    let date = event.target.parentNode.parentNode
-    // console.log(date)
-    var mtitle = document.getElementById('modal title')
-    mtitle.innerText = date.dataset.value
-  }
+  tab[index].onclick = refreshModal
 }
 
+// refreshing the modal with brand new data from api
+function refreshModal(event) {
+  modal.style.display = "block";
+  let date = event.target.parentNode.parentNode.dataset.value
+  // console.log(date)
+  var mtitle = document.getElementById('modal title')
+  mtitle.innerText = date
+  refreshModalPanel(date)
+  
+}
+
+
+function refreshModalPanel(date) {
+  // get data for that date 
+  fetch('request.php',{
+    method:'post',
+    body: JSON.stringify({
+      "Type":"Arrangement",
+      "Action":"Ask",
+      "PatientID":patID,
+      "Date":date,
+
+  })
+    }).then(res=> res.json())
+    .then(data =>{
+      console.log(data)
+      if (data != false) {
+        var regimetable = document.getElementById('regimeTable')
+        regimetable.innerHTML = 
+          `<tr>
+            <th>
+                Regieme Name
+            </th>
+            <th>
+                Round Time
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Action
+            </th>
+          </tr>`
+        for (let key in data['Regime']) {
+          let newRow = document.createElement('tr')
+          newRow.setAttribute('data-id',data['Regime'][key]['id'])
+          newRow.setAttribute('data-statusid',data['Regime'][key]['statusid'])
+
+          let newRowName = document.createElement('td')
+          newRowName.innerText = data['Regime'][key]['name']
+          newRow.appendChild(newRowName)
+
+          let newRowRound = document.createElement('td')
+          newRowRound.innerText = data['Regime'][key]['round']
+          newRow.appendChild(newRowRound)
+
+
+          let newRowStatus = document.createElement('td')
+          let newSelectionList = document.createElement('select')
+          let statuses = ['Given','Refused','Fasting','No Stock','Ceased']
+          for (let i in statuses) {
+            let newOption = document.createElement('option')
+            newOption.value = i
+            newOption.innerText = statuses[i]
+            if (newOption.innerText == data['Regime'][key]['status']) {
+              newOption.selected = true
+            }
+            newSelectionList.appendChild(newOption)
+          }
+          newSelectionList.onchange = statusChange
+          newRowStatus.appendChild(newSelectionList)
+          newRow.appendChild(newRowStatus)
+
+          let newRowAction = document.createElement('td')
+          let newSaveButton = document.createElement('button')
+          newSaveButton.innerHTML = "&#10004;"
+          newSaveButton.onclick = saveRegime
+
+          let newDeleteButton = document.createElement('button')
+          newDeleteButton.innerHTML = "&#x2716;"
+          newDeleteButton.onclick = regimeDelete
+          newRowAction.appendChild(newSaveButton)
+          newRowAction.appendChild(newDeleteButton)
+          newRow.appendChild(newRowAction)
+
+          regimetable.appendChild(newRow)
+        }
+
+      }else{
+        alert('Not exist')
+
+      }
+    }
+
+  );
+}
+// onchange of status
+function statusChange(event) {
+  let row = event.target.parentNode.parentNode
+  row.setAttribute('data-statusid',parseInt(event.target.value)+1)
+  // console.log(row)
+
+}
+
+// onchange of round
+function roundChange(event) {
+  console.log(event.target.value)
+  let row = event.target.parentNode.parentNode
+  row.setAttribute('data-roundid',parseInt(event.target.value)+1)
+}
+
+// onchange of regime
+function termChange(event) {
+  console.log(event.target.value)
+  let row = event.target.parentNode.parentNode
+  row.setAttribute('data-termid',parseInt(event.target.value))
+}
+
+// onclick of delete button
+function regimeDelete(event) {
+    // send delete request
+    var mtitle = document.getElementById('modal title')
+    let date = mtitle.innerText
+
+    let rid = event.target.parentNode.parentNode.dataset.id
+    console.log(rid)
+    fetch('request.php',{
+      method:'post',
+      body: JSON.stringify({
+        "Type":"Arrangement",
+        "Action":"DeleteRegime",
+        "RecordID": rid,
+        "Date": date
+    })
+      }).then(res=> res.text())
+      .then(data =>{
+        console.log(data)
+        if (data = false) {
+          alert('Database internal error')
+        }else{
+          refreshCalendar(dateBox.value)
+          refreshModalPanel(date)
+        }
+      }
+  
+    );
+}
+// when new regime is added
+function addNewRegime(params) {
+  var regimetable = document.getElementById('regimeTable')
+    let newRow = document.createElement('tr')
+    newRow.setAttribute('data-id','')
+    newRow.setAttribute('data-statusid','1')
+    newRow.setAttribute('data-roundid','1')
+
+    let newRowName = document.createElement('td')
+    let newInput = document.createElement('input')
+    let newList = document.createElement('datalist')
+    newList.id = 'food list'
+
+
+    // collect all foods
+    fetch('request.php',{
+      method:'post',
+      body: JSON.stringify({
+        "Type":"Regimes",
+        "Action":"ALL",
+    })
+      }).then(res=> res.json())
+      .then(data =>{
+        if (data != false) {
+          data.forEach(element => {
+            var selectChild = document.createElement('option')
+            selectChild.setAttribute("value",element['id'])
+            selectChild.innerText = element['RegimeName']
+            newList.appendChild(selectChild)
+          });
+        }else{
+          alert('Database internal error')
+  
+        }
+      }
+  
+    );
+    newInput.setAttribute('list','food list')
+    newInput.onchange = termChange
+    newRowName.appendChild(newInput)
+    newRowName.appendChild(newList)
+    newRow.appendChild(newRowName)
+
+    let newRowRound = document.createElement('td')
+    let newSelectionRound = document.createElement('select')
+    let Rounds = ['morning','afternoon','evening']
+    for (let i in Rounds) {
+      let newOption = document.createElement('option')
+      newOption.value = i
+      newOption.innerText = Rounds[i]
+      if (newOption.innerText == 'Given') {
+        newOption.selected = true
+      }
+      newSelectionRound.appendChild(newOption)
+    }
+    newSelectionRound.onchange = roundChange
+    newRowRound.appendChild(newSelectionRound)
+    newRow.appendChild(newRowRound)
+
+
+    let newRowStatus = document.createElement('td')
+    let newSelectionList = document.createElement('select')
+    let statuses = ['Given','Refused','Fasting','No Stock','Ceased']
+    for (let i in statuses) {
+      let newOption = document.createElement('option')
+      newOption.value = i
+      newOption.innerText = statuses[i]
+      if (newOption.innerText == 'Given') {
+        newOption.selected = true
+      }
+      newSelectionList.appendChild(newOption)
+    }
+    newSelectionList.onchange = statusChange
+    newRowStatus.appendChild(newSelectionList)
+    newRow.appendChild(newRowStatus)
+
+    let newRowAction = document.createElement('td')
+    let newSaveButton = document.createElement('button')
+    newSaveButton.innerHTML = "&#10004;"
+    newSaveButton.onclick = saveRegime
+    newRowAction.appendChild(newSaveButton)
+    newRow.appendChild(newRowAction)
+
+    regimetable.appendChild(newRow)
+}
+
+// add and save for regime
+function saveRegime(event) {
+  let row = event.target.parentNode.parentNode
+  console.log(row)
+  let recordId = row.dataset.id
+  let statusId = row.dataset.statusid
+  let roundId = row.dataset.roundid
+  let regimeId = row.dataset.termid
+
+  // console.log(recordId)
+  // console.log(statusId)
+  // console.log(roundId)
+  // console.log(regimeId)
+  let valid = true
+  if (!recordId) {
+    console.log('new')
+    var re = /^\d+$/;
+    if (!re.test(regimeId)) {
+      valid = false
+    }
+  }
+
+  // send to api if qualified
+  if (valid) {
+    var mtitle = document.getElementById('modal title')
+    let date = mtitle.innerText
+    console.log('send')
+    fetch('request.php',{
+      method:'post',
+      body: JSON.stringify({
+        "Type":"Arrangement",
+        "Action":"AddRegime",
+        "RecordID":recordId,
+        "StatusID":statusId,
+        "RoundID":roundId,
+        "RegimeID":regimeId,
+        "PatientID":patID,
+        "Date": date
+
+    })
+      }).then(res=> res.json())
+      .then(data =>{
+        console.log(data)
+        if (data != false) {
+          refreshCalendar(dateBox.value)
+          refreshModalPanel(data['Date'].replace("\\",""))
+          alert('saved')
+
+        }else{
+          alert('Unkown Regime ID')
+        }
+      }
+    );
+  }else{
+    alert('Search field only taken number, however text can be searched and auto transfer to id')
+  }
+}
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
