@@ -237,26 +237,9 @@
                                 <div class='column right-s'>
                                     <h4>Medications</h4>
                                     
-                                    <button style='float:right;'>&#10010;</button>
+                                    <button style='float:right;' onclick='addNewMedication()'>&#10010;</button>
                                     <hr>
                                     <table id='medicationTable' class='stable'>
-                                        <tr>
-                                            <th>
-                                                medication Name
-                                            </th>
-                                            <th>
-                                                Round Time
-                                            </th>
-                                            <th>
-                                                Status
-                                            </th>
-                                            <th>
-                                                Dosage
-                                            </th>
-                                            <th>
-                                                Action
-                                            </th>
-                                        </tr>
                                     </table>
                                 </div>
                             </div>

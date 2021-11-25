@@ -445,6 +445,38 @@
 
                     $answer['Regime'][] = $term;
                 }
+
+                // then get medications
+                $sql_query = "SELECT * FROM (([MedicationRecords]
+                INNER JOIN [Medications] ON
+                MedicationRecords.MedicationID = Medications.MedicationID)
+                INNER JOIN [Status] ON
+                MedicationRecords.StatusID = Status.StatusID)
+                INNER JOIN [Round] ON
+                MedicationRecords.RoundID = Round.RoundID
+                WHERE `PatientID` = $pID AND `Day` = #$date#
+                ORDER BY MedicationRecords.RoundID";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                // $answer = array();    
+                while (odbc_fetch_row($result)) {
+                    $term = array();
+                    $mrid = odbc_result($result,'MedicationRecordsID');
+                    $mn = odbc_result($result,'MedicationName');
+                    $drr = odbc_result($result,'RoundName');
+                    $drs = odbc_result($result,'StatusName');
+                    $drsid = odbc_result($result,'StatusID');
+                    $dosage = odbc_result($result,'dosage');
+
+                    $term['id']=$mrid;
+                    $term['name']=$mn;
+                    $term['status']=$drs;
+                    $term['statusid']=$drsid;
+                    $term['dosage']=$dosage;
+
+                    $term['round']=$drr;
+
+                    $answer['Medication'][] = $term;
+                }
                 print(json_encode( $answer ));
 
             }
@@ -478,7 +510,48 @@
                 print(json_encode( $_POST ));
             }
 
-            // handle regime add process
+            // handle medication add process
+            if ($_POST['Action']=="AddMedication") {
+                $pID = intval($_POST['PatientID']);
+                $RecordID = intval($_POST['RecordID']);
+                $StatusID = intval($_POST['StatusID']);
+                $dosage = intval($_POST['Dosage']);
+                $date = $_POST['Date'];
+                $today = date("m/d/Y");
+                // if update
+                // print(json_encode( $_POST ));
+
+                if ($_POST['RecordID']) {
+                    $sql_update = "UPDATE [MedicationRecords]
+                    SET `StatusID` = $StatusID, `LastModifiedDate` = $today,
+                    `PractitionerID` = $currentPractitioner
+                    WHERE  `MedicationRecordsID` = $RecordID";
+                    $result = odbc_exec($conn,$sql_update) or die(odbc_errormsg());
+
+                // if insert
+                }else{
+                    $TermID = intval($_POST['MedicationID']);
+                    $RoundID = intval($_POST['RoundID']);
+
+                    $sql_insert = "INSERT INTO [MedicationRecords]
+                    (`Day`,`RoundID`,`MedicationID`,`StatusID`,`PatientID`,`PractitionerID`,`Dosage`,`LastModifiedDate`)
+                    VALUES (#$date#,$RoundID,$TermID,$StatusID,$pID,$currentPractitioner,$dosage,$today)";
+                    $result = odbc_exec($conn,$sql_insert) or die(odbc_errormsg());
+                }
+
+                print(json_encode( $_POST ));
+            }
+
+            // handle medication deletion process
+            if ($_POST['Action']=="DeleteMedication") {
+                $RecordID = intval($_POST['RecordID']);
+
+                // delete by id
+                $sql_delete = "DELETE FROM [MedicationRecords] WHERE `MedicationRecordsID` = $RecordID";
+                $result = odbc_exec($conn,$sql_delete) or die(odbc_errormsg());
+                print(json_encode( $_POST ));
+            }
+            // handle regime delete process
             if ($_POST['Action']=="DeleteRegime") {
                 $RecordID = intval($_POST['RecordID']);
 

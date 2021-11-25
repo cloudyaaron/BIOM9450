@@ -19,7 +19,7 @@ dateBox.onchange = function(event) {
 
 // refreshing the calendar
 function refreshCalendar(date) {
-    console.log(date)
+    // console.log(date)
 
     for (let index = 0; index < 7; index++) {
 
@@ -185,7 +185,7 @@ function refreshModalPanel(date) {
   })
     }).then(res=> res.json())
     .then(data =>{
-      console.log(data)
+      // console.log(data)
       if (data != false) {
         var regimetable = document.getElementById('regimeTable')
         regimetable.innerHTML = 
@@ -248,6 +248,76 @@ function refreshModalPanel(date) {
           regimetable.appendChild(newRow)
         }
 
+        var medicationTable = document.getElementById('medicationTable')
+        medicationTable.innerHTML =`
+          <tr>
+            <th>
+                medication Name
+            </th>
+            <th>
+                Round Time
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Dosage
+            </th>
+            <th>
+                Action
+            </th>
+          </tr> 
+        `
+        for (let key in data['Medication']) {
+          let newRow = document.createElement('tr')
+          newRow.setAttribute('data-id',data['Medication'][key]['id'])
+          newRow.setAttribute('data-statusid',data['Medication'][key]['statusid'])
+
+          let newRowName = document.createElement('td')
+          newRowName.innerText = data['Medication'][key]['name']
+          newRow.appendChild(newRowName)
+
+          let newRowRound = document.createElement('td')
+          newRowRound.innerText = data['Medication'][key]['round']
+          newRow.appendChild(newRowRound)
+
+
+          let newRowStatus = document.createElement('td')
+          let newSelectionList = document.createElement('select')
+          let statuses = ['Given','Refused','Fasting','No Stock','Ceased']
+          for (let i in statuses) {
+            let newOption = document.createElement('option')
+            newOption.value = i
+            newOption.innerText = statuses[i]
+            if (newOption.innerText == data['Medication'][key]['status']) {
+              newOption.selected = true
+            }
+            newSelectionList.appendChild(newOption)
+          }
+          newSelectionList.onchange = statusChange
+          newRowStatus.appendChild(newSelectionList)
+          newRow.appendChild(newRowStatus)
+
+          let newdosage = document.createElement('td')
+          newdosage.innerText = data['Medication'][key]['dosage']
+          newRow.setAttribute('data-dosage',data['Medication'][key]['dosage'])
+          newdosage.setAttribute('align','center')
+          newRow.appendChild(newdosage)
+
+          let newRowAction = document.createElement('td')
+          let newSaveButton = document.createElement('button')
+          newSaveButton.innerHTML = "&#10004;"
+          newSaveButton.onclick = saveMedication
+
+          let newDeleteButton = document.createElement('button')
+          newDeleteButton.innerHTML = "&#x2716;"
+          newDeleteButton.onclick = medicationDelete
+          newRowAction.appendChild(newSaveButton)
+          newRowAction.appendChild(newDeleteButton)
+          newRow.appendChild(newRowAction)
+          // console.log(newRow)
+          medicationTable.appendChild(newRow)
+        }
       }else{
         alert('Not exist')
 
@@ -260,7 +330,7 @@ function refreshModalPanel(date) {
 function statusChange(event) {
   let row = event.target.parentNode.parentNode
   row.setAttribute('data-statusid',parseInt(event.target.value)+1)
-  // console.log(row)
+  console.log(row)
 
 }
 
@@ -276,6 +346,12 @@ function termChange(event) {
   console.log(event.target.value)
   let row = event.target.parentNode.parentNode
   row.setAttribute('data-termid',parseInt(event.target.value))
+}
+
+function dosageChange(event) {
+  console.log(event.target.value)
+  let row = event.target.parentNode.parentNode
+  row.setAttribute('data-dosage',parseInt(event.target.value))
 }
 
 // onclick of delete button
@@ -307,6 +383,37 @@ function regimeDelete(event) {
   
     );
 }
+
+// onclick of medicationDelete button
+function medicationDelete(event) {
+      // send delete request
+      var mtitle = document.getElementById('modal title')
+      let date = mtitle.innerText
+  
+      let rid = event.target.parentNode.parentNode.dataset.id
+      console.log(rid)
+      fetch('request.php',{
+        method:'post',
+        body: JSON.stringify({
+          "Type":"Arrangement",
+          "Action":"DeleteMedication",
+          "RecordID": rid,
+          "Date": date
+      })
+        }).then(res=> res.text())
+        .then(data =>{
+          // console.log(data)
+          if (data = false) {
+            alert('Database internal error')
+          }else{
+            refreshCalendar(dateBox.value)
+            refreshModalPanel(date)
+          }
+        }
+    
+      );
+}
+
 // when new regime is added
 function addNewRegime(params) {
   var regimetable = document.getElementById('regimeTable')
@@ -393,6 +500,103 @@ function addNewRegime(params) {
     regimetable.appendChild(newRow)
 }
 
+// when new medication is added
+function addNewMedication(){
+  var medicationTable = document.getElementById('medicationTable')
+  let newRow = document.createElement('tr')
+  newRow.setAttribute('data-id','')
+  newRow.setAttribute('data-statusid','1')
+  newRow.setAttribute('data-roundid','1')
+  newRow.setAttribute('data-dosage','1')
+
+  let newRowName = document.createElement('td')
+  let newInput = document.createElement('input')
+  let newList = document.createElement('datalist')
+  newList.id = 'medication list'
+
+
+  // collect all foods
+  fetch('request.php',{
+    method:'post',
+    body: JSON.stringify({
+      "Type":"Medications",
+      "Action":"ALL",
+  })
+    }).then(res=> res.json())
+    .then(data =>{
+      if (data != false) {
+        data.forEach(element => {
+          var selectChild = document.createElement('option')
+          selectChild.setAttribute("value",element['id'])
+          selectChild.innerText = element['MedicationName']
+          newList.appendChild(selectChild)
+        });
+      }else{
+        alert('Database internal error')
+
+      }
+    }
+
+  );
+  newInput.setAttribute('list','medication list')
+  newInput.onchange = termChange
+  newRowName.appendChild(newInput)
+  newRowName.appendChild(newList)
+  newRow.appendChild(newRowName)
+
+  let newRowRound = document.createElement('td')
+  let newSelectionRound = document.createElement('select')
+  let Rounds = ['morning','afternoon','evening']
+  for (let i in Rounds) {
+    let newOption = document.createElement('option')
+    newOption.value = i
+    newOption.innerText = Rounds[i]
+    if (newOption.innerText == 'Given') {
+      newOption.selected = true
+    }
+    newSelectionRound.appendChild(newOption)
+  }
+  newSelectionRound.onchange = roundChange
+  newRowRound.appendChild(newSelectionRound)
+  newRow.appendChild(newRowRound)
+
+
+  let newRowStatus = document.createElement('td')
+  let newSelectionList = document.createElement('select')
+  let statuses = ['Given','Refused','Fasting','No Stock','Ceased']
+  for (let i in statuses) {
+    let newOption = document.createElement('option')
+    newOption.value = i
+    newOption.innerText = statuses[i]
+    if (newOption.innerText == 'Given') {
+      newOption.selected = true
+    }
+    newSelectionList.appendChild(newOption)
+  }
+  newSelectionList.onchange = statusChange
+  newRowStatus.appendChild(newSelectionList)
+  newRow.appendChild(newRowStatus)
+
+  let newRowDosage = document.createElement('td')
+  let newRowDosageInput = document.createElement('input')
+  newRowDosageInput.setAttribute("type",'number')
+  newRowDosageInput.setAttribute("style",'width:50px')
+  newRowDosageInput.setAttribute("min",'1')
+  newRowDosageInput.value = 1
+  newRowDosageInput.onchange = dosageChange
+  newRowDosage.appendChild(newRowDosageInput)
+  newRow.appendChild(newRowDosage)
+
+  let newRowAction = document.createElement('td')
+  let newSaveButton = document.createElement('button')
+  newSaveButton.innerHTML = "&#10004;"
+  newSaveButton.onclick = saveMedication
+  newRowAction.appendChild(newSaveButton)
+  newRow.appendChild(newRowAction)
+
+  medicationTable.appendChild(newRow)
+}
+
 // add and save for regime
 function saveRegime(event) {
   let row = event.target.parentNode.parentNode
@@ -448,6 +652,71 @@ function saveRegime(event) {
     );
   }else{
     alert('Search field only taken number, however text can be searched and auto transfer to id')
+  }
+}
+
+// add and save for medication
+function saveMedication(event) {
+  let row = event.target.parentNode.parentNode
+  // console.log(row)
+  let recordId = row.dataset.id
+  let statusId = row.dataset.statusid
+  let roundId = row.dataset.roundid
+  let termid = row.dataset.termid
+  let dosage = row.dataset.dosage
+
+  // console.log(recordId)
+  // console.log(statusId)
+  // console.log(roundId)
+  // console.log(termid)
+  // console.log(dosage)
+
+  let valid = true
+  if (!recordId) {
+    // console.log('new')
+    var re = /^\d+$/;
+    if (!re.test(termid)) {
+      valid = false
+    }
+    if (dosage<=0) {
+      valid = false
+    }
+  }
+
+  // send to api if qualified
+  if (valid) {
+    var mtitle = document.getElementById('modal title')
+    let date = mtitle.innerText
+    // console.log('send')
+    fetch('request.php',{
+      method:'post',
+      body: JSON.stringify({
+        "Type":"Arrangement",
+        "Action":"AddMedication",
+        "RecordID":recordId,
+        "StatusID":statusId,
+        "RoundID":roundId,
+        "MedicationID":termid,
+        "Dosage":dosage,
+        "PatientID":patID,
+        "Date": date
+
+    })
+      }).then(res=> res.json())
+      .then(data =>{
+        // console.log(data)
+        if (data != false) {
+          refreshCalendar(dateBox.value)
+          refreshModalPanel(data['Date'].replace("\\",""))
+          alert('saved')
+
+        }else{
+          alert('Unkown Regime ID')
+        }
+      }
+    );
+  }else{
+    alert('Search and dosage field only taken number, however text can be searched and auto transfer to id\n Or Dosage can not zero or Negative value')
   }
 }
 
