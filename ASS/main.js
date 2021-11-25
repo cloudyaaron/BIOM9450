@@ -330,26 +330,26 @@ function refreshModalPanel(date) {
 function statusChange(event) {
   let row = event.target.parentNode.parentNode
   row.setAttribute('data-statusid',parseInt(event.target.value)+1)
-  console.log(row)
+  // console.log(row)
 
 }
 
 // onchange of round
 function roundChange(event) {
-  console.log(event.target.value)
+  // console.log(event.target.value)
   let row = event.target.parentNode.parentNode
   row.setAttribute('data-roundid',parseInt(event.target.value)+1)
 }
 
 // onchange of regime
 function termChange(event) {
-  console.log(event.target.value)
+  // console.log(event.target.value)
   let row = event.target.parentNode.parentNode
   row.setAttribute('data-termid',parseInt(event.target.value))
 }
 
 function dosageChange(event) {
-  console.log(event.target.value)
+  // console.log(event.target.value)
   let row = event.target.parentNode.parentNode
   row.setAttribute('data-dosage',parseInt(event.target.value))
 }
@@ -361,7 +361,7 @@ function regimeDelete(event) {
     let date = mtitle.innerText
 
     let rid = event.target.parentNode.parentNode.dataset.id
-    console.log(rid)
+    // console.log(rid)
     fetch('request.php',{
       method:'post',
       body: JSON.stringify({
@@ -372,7 +372,7 @@ function regimeDelete(event) {
     })
       }).then(res=> res.text())
       .then(data =>{
-        console.log(data)
+        // console.log(data)
         if (data = false) {
           alert('Database internal error')
         }else{
@@ -391,7 +391,7 @@ function medicationDelete(event) {
       let date = mtitle.innerText
   
       let rid = event.target.parentNode.parentNode.dataset.id
-      console.log(rid)
+      // console.log(rid)
       fetch('request.php',{
         method:'post',
         body: JSON.stringify({
@@ -600,7 +600,7 @@ function addNewMedication(){
 // add and save for regime
 function saveRegime(event) {
   let row = event.target.parentNode.parentNode
-  console.log(row)
+  // console.log(row)
   let recordId = row.dataset.id
   let statusId = row.dataset.statusid
   let roundId = row.dataset.roundid
@@ -612,7 +612,7 @@ function saveRegime(event) {
   // console.log(regimeId)
   let valid = true
   if (!recordId) {
-    console.log('new')
+    // console.log('new')
     var re = /^\d+$/;
     if (!re.test(regimeId)) {
       valid = false
@@ -623,7 +623,7 @@ function saveRegime(event) {
   if (valid) {
     var mtitle = document.getElementById('modal title')
     let date = mtitle.innerText
-    console.log('send')
+    // console.log('send')
     fetch('request.php',{
       method:'post',
       body: JSON.stringify({
@@ -639,7 +639,7 @@ function saveRegime(event) {
     })
       }).then(res=> res.json())
       .then(data =>{
-        console.log(data)
+        // console.log(data)
         if (data != false) {
           refreshCalendar(dateBox.value)
           refreshModalPanel(data['Date'].replace("\\",""))
