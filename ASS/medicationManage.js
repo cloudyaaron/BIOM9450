@@ -118,7 +118,11 @@ getMedButton.onclick = function(event) {
         console.log(data)
         if (data != false) {
           medNameBox.value = data['MedicationName']
-          prescriptionBox.checked = data['Presctiption']
+          if (data['Prescription']=='0') {
+            prescriptionBox.checked = false
+          }else{
+            prescriptionBox.checked = true
+          }
           descriptionMed.value = data['Description']
           unlockMedPanelButtons(false);
           saveMedButton.disabled = true

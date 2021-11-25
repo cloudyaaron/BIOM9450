@@ -44,7 +44,7 @@
                 $mn = $_POST['MedicationName'];
                 $mp = "No";
                 if ($_POST['Prescription'] == 1) {
-                    $mp = "yes";
+                    $mp = "Yes";
                 }
 
                 $md = $_POST['Description'];
