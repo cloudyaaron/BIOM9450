@@ -23,7 +23,7 @@
             echo "<div class='wr'>Internal Unkown Error, Plz contact us about this issue</div>";
         }
 
-        // get pratitionerID from cookie
+        // get pratitionerID from cookie,validate user
         $to = $_COOKIE['token'];
         $sql_query = "SELECT * FROM [LoginStatus] WHERE `Token` ='$to'";
         $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
