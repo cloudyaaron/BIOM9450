@@ -487,11 +487,11 @@
                 $RecordID = intval($_POST['RecordID']);
                 $StatusID = intval($_POST['StatusID']);
                 $date = $_POST['Date'];
-                $today = date("m/d/Y");
+                $today = date("m/d/Y",time());
                 // if update
                 if ($_POST['RecordID']) {
                     $sql_update = "UPDATE [DietRegimeRecords]
-                    SET `StatusID` = $StatusID, `LastModifiedDate` = $today,
+                    SET `StatusID` = $StatusID, `LastModifiedDate` = #$today#,
                     `PractitionerID` = $currentPractitioner
                     WHERE  `DietRegimeRecordsID` = $RecordID";
                     $result = odbc_exec($conn,$sql_update) or die(odbc_errormsg());
@@ -503,7 +503,7 @@
 
                     $sql_insert = "INSERT INTO [DietRegimeRecords]
                     (`Day`,`RoundID`,`RegimeID`,`StatusID`,`PatientID`,`PractitionerID`,`LastModifiedDate`)
-                    VALUES (#$date#,$RoundID,$RegimeID,$StatusID,$pID,$currentPractitioner,$today)";
+                    VALUES (#$date#,$RoundID,$RegimeID,$StatusID,$pID,$currentPractitioner,#$today#)";
                     $result = odbc_exec($conn,$sql_insert) or die(odbc_errormsg());
                 }
 
@@ -517,13 +517,13 @@
                 $StatusID = intval($_POST['StatusID']);
                 $dosage = intval($_POST['Dosage']);
                 $date = $_POST['Date'];
-                $today = date("m/d/Y");
+                $today = date("m/d/Y",time());
                 // if update
                 // print(json_encode( $_POST ));
 
                 if ($_POST['RecordID']) {
                     $sql_update = "UPDATE [MedicationRecords]
-                    SET `StatusID` = $StatusID, `LastModifiedDate` = $today,
+                    SET `StatusID` = $StatusID, `LastModifiedDate` = #$today#,
                     `PractitionerID` = $currentPractitioner
                     WHERE  `MedicationRecordsID` = $RecordID";
                     $result = odbc_exec($conn,$sql_update) or die(odbc_errormsg());
@@ -535,7 +535,7 @@
 
                     $sql_insert = "INSERT INTO [MedicationRecords]
                     (`Day`,`RoundID`,`MedicationID`,`StatusID`,`PatientID`,`PractitionerID`,`Dosage`,`LastModifiedDate`)
-                    VALUES (#$date#,$RoundID,$TermID,$StatusID,$pID,$currentPractitioner,$dosage,$today)";
+                    VALUES (#$date#,$RoundID,$TermID,$StatusID,$pID,$currentPractitioner,$dosage,#$today#)";
                     $result = odbc_exec($conn,$sql_insert) or die(odbc_errormsg());
                 }
 
@@ -561,6 +561,124 @@
                 print(json_encode( $_POST ));
             }
             die();
+        }
+
+        // return summary data
+        if ($_POST['Type'] == 'Summary') {
+            http_response_code(200);
+            header('Content-type: application/json');
+
+            $startDate = $_POST['StartDate'];
+            $endDate = $_POST['EndDate'];
+            
+            if ($_POST['Action'] == "GMWS") {
+                $answer = array();
+                $sql_query = "SELECT COUNT(*) AS `totalPatients` FROM (SELECT DISTINCT `patientID` FROM [DietRegimeRecords] WHERE `PractitionerID` = $currentPractitioner AND
+                `Day` >= #$startDate# AND `Day` <= #$endDate#)";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                while (odbc_fetch_row($result)) {
+                    $t = odbc_result($result,"totalPatients");
+                    $answer["uniquePatientsRegime"][]=$t;
+                }
+                $sql_query = "SELECT COUNT(*) AS `total` FROM [DietRegimeRecords] WHERE `PractitionerID` = $currentPractitioner  AND
+                `Day` >= #$startDate# AND `Day` <= #$endDate#";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                while (odbc_fetch_row($result)) {
+                    $t = odbc_result($result,"total");
+                    $answer["totalRegimes"][]=$t;
+                }
+                $sql_query = "SELECT COUNT(*) AS `totalPatients` FROM (SELECT DISTINCT `patientID` FROM [MedicationRecords] WHERE `PractitionerID` = $currentPractitioner AND
+                `Day` >= #$startDate# AND `Day` <= #$endDate#)";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                while (odbc_fetch_row($result)) {
+                    $t = odbc_result($result,"totalPatients");
+                    $answer["uniquePatientsMedication"][]=$t;
+                }
+                $sql_query = "SELECT COUNT(*) AS `total` FROM [MedicationRecords] WHERE `PractitionerID` = $currentPractitioner AND
+                `Day` >= #$startDate# AND `Day` <= #$endDate#";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                while (odbc_fetch_row($result)) {
+                    $t = odbc_result($result,"total");
+                    $answer["totalMedications"][]=$t;
+                }
+
+                //  get Medications table
+                $sql_query = "SELECT * FROM ((([MedicationRecords]
+                INNER JOIN [Medications] ON
+                MedicationRecords.MedicationID = Medications.MedicationID)
+                INNER JOIN [Status] ON
+                MedicationRecords.StatusID = Status.StatusID)
+                INNER JOIN [Round] ON
+                MedicationRecords.RoundID = Round.RoundID)
+                INNER JOIN [Patients] ON
+                MedicationRecords.PatientID = Patients.PatientID
+                WHERE `PractitionerID` = $currentPractitioner AND 
+                `Day` >= #$startDate# AND `Day` <= #$endDate#
+                ORDER BY Day";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                // $answer = array();    
+                while (odbc_fetch_row($result)) {
+                    $term = array();
+                    $dr = odbc_result($result,'MedicationName');
+                    $drr = odbc_result($result,'RoundName');
+                    $drs = odbc_result($result,'StatusName');
+                    $fn = odbc_result($result,'FirstName');
+                    $ln = odbc_result($result,'LastName');
+                    $d = odbc_result($result,'Dosage');
+                    $day = odbc_result($result,'Day');
+
+                    $term['name']=$dr;
+                    $term['status']=$drs;
+                    $term['round']=$drr;
+                    $term['firstname']=$fn;
+                    $term['lastname']=$ln;
+                    $term['dosage']=$d;
+                    $term['date']=$day;
+
+                    $answer['Medication'][] = $term;
+                }
+
+                //  get regime table
+                $sql_query = "SELECT * FROM ((([DietRegimeRecords]
+                INNER JOIN [DietRegime] ON
+                DietRegimeRecords.RegimeID = DietRegime.RegimeID)
+                INNER JOIN [Status] ON
+                DietRegimeRecords.StatusID = Status.StatusID)
+                INNER JOIN [Round] ON
+                DietRegimeRecords.RoundID = Round.RoundID)
+                INNER JOIN [Patients] ON
+                DietRegimeRecords.PatientID = Patients.PatientID
+                WHERE `PractitionerID` = $currentPractitioner AND 
+                `Day` >= #$startDate# AND `Day` <= #$endDate#
+                ORDER BY Day";
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+                // $answer = array();    
+                while (odbc_fetch_row($result)) {
+                    $term = array();
+                    $dr = odbc_result($result,'RegimeName');
+                    $drr = odbc_result($result,'RoundName');
+                    $drs = odbc_result($result,'StatusName');
+                    $fn = odbc_result($result,'FirstName');
+                    $ln = odbc_result($result,'LastName');
+                    $day = odbc_result($result,'Day');
+
+                    $term['name']=$dr;
+                    $term['status']=$drs;
+                    $term['round']=$drr;
+                    $term['firstname']=$fn;
+                    $term['lastname']=$ln;
+                    $term['date']=$day;
+
+                    $answer['Regime'][] = $term;
+                }
+                print(json_encode($answer));
+            }
+            if ($_POST['Action'] == "GPWS") {
+                # code...
+                print(json_encode( $_POST));
+
+            }
+        
         }else{
             http_response_code(400);
 

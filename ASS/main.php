@@ -35,7 +35,7 @@
             // if the request is noraml log in to the page
             if (!empty($_POST['username']) && !empty($_POST['password'])) {
                 $username = $_POST['username'];
-                $password = $_POST['password'];
+                $password = hash('sha256',$_POST['password']);
                 $valid = true;
 
 
@@ -186,6 +186,9 @@
                             <h2>Schedule</h2>
                         </div>
                         <div style='float:right;'>
+                            <button id='GMWS' disabled onclick='summaryShow(`GMWS`)'>Get My Weekly summary</button>
+                            <button id='GPWS' disabled  onclick='summaryShow(`GPWS`)'>Get Patient Weekly summary</button>
+
                             <input id='pickedDate' type='date' disabled>
 
                         </div>
@@ -243,6 +246,19 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>";
+
+                echo"<!-- The Modal -->
+                <div id='summarymodal' class='modal'>
+
+                <!-- Modal content -->
+                    <div class='modal-content'>
+                        <div class='modal-header'>
+                            <h4 id='summary modal title'></h4>
+                        </div>
+                        <div id='summary modal body' class='modal-body'>
                         </div>
                     </div>
                 </div>";

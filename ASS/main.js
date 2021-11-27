@@ -12,6 +12,13 @@ let patientIDBox = document.getElementById("patientID");
 // get date box
 let dateBox = document.getElementById("pickedDate");
 
+// get summary button and modal
+let mySummary = document.getElementById("GMWS");
+let patientSummary = document.getElementById("GPWS");
+let summaryBox = document.getElementById("summarymodal");
+let summaryTitle = document.getElementById("summary modal title");
+let summaryBody = document.getElementById("summary modal body");
+
 // onchange of the date box refresh the page
 dateBox.onchange = function(event) {
     refreshCalendar(event.target.value)
@@ -127,26 +134,175 @@ getPatientbutton.onclick = function(event) {
             }else{
                 patientPhoto.setAttribute('src',data['Photo'])
             }
-  
+            dateBox.disabled = false
+            let day = new Date()
+            let shortdisplay = day.getFullYear()+"-" + (day.getMonth()+1) + "-"+day.getDate()
+      
+            dateBox.value = shortdisplay
+            refreshCalendar(dateBox.value)
+            mySummary.disabled = false
+            patientSummary.disabled = false
           }else{
             alert('Not exist')
-    
+            patientNameBox.innerText = ""
+            patientDesBox.innerText = ""
+            patientGenderBox.innerText = ""
+            patientAgeBox.innerText = ""
+            patientIDBox.value = ""
+            patientIDBox.innerText = ""
+            patientPhoto.setAttribute('src',"./ServiceUNSW.png")
+            dateBox.disabled = true
+            mySummary.disabled = true
+            patientSummary.disabled = true
+            for (let index = 0; index < 7; index++) {
+
+              // clear current calendar
+              var dayTable = document.getElementById("table "+index);
+              dayTable.innerHTML = ''
+            }
           }
         }
     
       );
 
 
-      dateBox.disabled = false
-      let day = new Date()
-      let shortdisplay = day.getFullYear()+"-" + (day.getMonth()+1) + "-"+day.getDate()
 
-      dateBox.value = shortdisplay
-      refreshCalendar(dateBox.value)
 
     }
 }
 
+
+function summaryShow(type){
+  // console.log(type)
+  summaryBox.style.display = "block";
+
+  let displayDate = new Date(dateBox.value)
+  let shortdisplay = (displayDate.getMonth()+1) + '/'+displayDate.getDate()+'/'+displayDate.getFullYear()
+  displayDate.setDate(displayDate.getDate()+6)
+  let endshortdisplay = (displayDate.getMonth()+1) + '/'+displayDate.getDate()+'/'+displayDate.getFullYear()
+
+  if (type == "GMWS") {
+    summaryTitle.innerText = "My Practitioner weekly summary From: " + shortdisplay + " to " + endshortdisplay
+    fetch('request.php',{
+      method:'post',
+      body: JSON.stringify({
+        "Type":"Summary",
+        "Action":type,
+        "StartDate":shortdisplay,
+        "EndDate":endshortdisplay,
+    })
+      }).then(res=> res.json())
+      .then(data =>{
+        console.log(data)
+        if (data != false) {
+          summaryBody.innerHTML = ""
+          let frist = document.createElement('p')
+          frist.innerText = "You have assign: " + data['totalRegimes'] + " Meals to " +data['uniquePatientsRegime'] + " Patient(s), in the chosen week"
+          let second = document.createElement('p')
+          second.innerText = "And dispense: " + data['totalMedications'] + " Medications to " +data['uniquePatientsMedication'] + " Patient(s), in the chosen week"
+          summaryBody.appendChild(frist)
+          summaryBody.appendChild(second)
+          let s = document.createElement('hr')
+          summaryBody.appendChild(s)
+          
+          let t = document.createElement('table')
+          let header = document.createElement('tr')
+          let headerc1 = document.createElement('th')
+          headerc1.innerText = 'Name'
+          header.appendChild(headerc1)
+          let headerc2 = document.createElement('th')
+          headerc2.innerText = 'Patient'
+          header.appendChild(headerc2)
+          let headerc6 = document.createElement('th')
+          headerc6.innerText = 'Date'
+          header.appendChild(headerc6)
+          let headerc3 = document.createElement('th')
+          headerc3.innerText = 'Round'
+          header.appendChild(headerc3)
+          let headerc4 = document.createElement('th')
+          headerc4.innerText = 'Status'
+          header.appendChild(headerc4)
+          let headerc5 = document.createElement('th')
+          headerc5.innerText = 'Dosage'
+          header.appendChild(headerc5)
+          t.appendChild(header)
+          t.className = 'fulltable'
+          summaryBody.appendChild(t)
+
+          for (let key in data['Regime']) {
+            let row = document.createElement('tr')
+            let headerc1 = document.createElement('td')
+            headerc1.innerText = data['Regime'][key]['name']
+            row.appendChild(headerc1)
+            let headerc2 = document.createElement('td')
+            headerc2.innerText = data['Regime'][key]['firstname']+" "+data['Regime'][key]['lastname']
+            row.appendChild(headerc2)
+            let headerc3 = document.createElement('td')
+            headerc3.innerText = data['Regime'][key]['date']
+            row.appendChild(headerc3)
+            let headerc4 = document.createElement('td')
+            headerc4.innerText = data['Regime'][key]['round']
+            row.appendChild(headerc4)
+            let headerc5 = document.createElement('td')
+            headerc5.innerText = data['Regime'][key]['status']
+            row.appendChild(headerc5)
+            let headerc6 = document.createElement('td')
+            headerc6.innerText = 'NA'
+            row.appendChild(headerc6)
+            t.appendChild(row)
+          }
+          for (let key in data['Medication']) {
+            let row = document.createElement('tr')
+            let headerc1 = document.createElement('td')
+            headerc1.innerText = data['Medication'][key]['name']
+            row.appendChild(headerc1)
+            let headerc2 = document.createElement('td')
+            headerc2.innerText = data['Medication'][key]['firstname']+" "+data['Medication'][key]['lastname']
+            row.appendChild(headerc2)
+            let headerc3 = document.createElement('td')
+            headerc3.innerText = data['Medication'][key]['date']
+            row.appendChild(headerc3)
+            let headerc4 = document.createElement('td')
+            headerc4.innerText = data['Medication'][key]['round']
+            row.appendChild(headerc4)
+            let headerc5 = document.createElement('td')
+            headerc5.innerText = data['Medication'][key]['status']
+            row.appendChild(headerc5)
+            let headerc6 = document.createElement('td')
+            headerc6.innerText = data['Medication'][key]['dosage']
+            row.appendChild(headerc6)
+            t.appendChild(row)
+          }
+        }else{
+          alert('database internal error')
+        }
+      }
+    );
+
+  }else if(type == "GPWS"){
+    summaryTitle.innerText = "Patient weekly summary From: " + shortdisplay + " to " + endshortdisplay
+
+    fetch('request.php',{
+      method:'post',
+      body: JSON.stringify({
+        "Type":"Summary",
+        "Action":type,
+        "PatientId":patID,
+        "StartDate":shortdisplay,
+        "EndDate":endshortdisplay,
+    })
+      }).then(res=> res.json())
+      .then(data =>{
+        console.log(data)
+        if (data != false) {
+
+        }else{
+          alert('database internal error')
+        }
+      }
+    );
+  }
+}
 
 let modal = document.getElementsByClassName("modal")[0];
 
@@ -727,6 +883,9 @@ window.onclick = function(event) {
   if (event.target == modal) {
       modal.style.display = "none";
   }
+  if (event.target == summaryBox) {
+    summaryBox.style.display = "none";
+}
 }
 
 
