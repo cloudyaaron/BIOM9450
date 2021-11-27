@@ -238,7 +238,8 @@ function summaryShow(type){
             headerc2.innerText = data['Regime'][key]['firstname']+" "+data['Regime'][key]['lastname']
             row.appendChild(headerc2)
             let headerc3 = document.createElement('td')
-            headerc3.innerText = data['Regime'][key]['date']
+            let shortdate = data['Regime'][key]['date'].substring(0,10)
+            headerc3.innerText = shortdate
             row.appendChild(headerc3)
             let headerc4 = document.createElement('td')
             headerc4.innerText = data['Regime'][key]['round']
@@ -260,7 +261,7 @@ function summaryShow(type){
             headerc2.innerText = data['Medication'][key]['firstname']+" "+data['Medication'][key]['lastname']
             row.appendChild(headerc2)
             let headerc3 = document.createElement('td')
-            headerc3.innerText = data['Medication'][key]['date']
+            headerc3.innerText = data['Medication'][key]['date'].substring(0,10)
             row.appendChild(headerc3)
             let headerc4 = document.createElement('td')
             headerc4.innerText = data['Medication'][key]['round']
@@ -281,13 +282,13 @@ function summaryShow(type){
 
   }else if(type == "GPWS"){
     summaryTitle.innerText = "Patient weekly summary From: " + shortdisplay + " to " + endshortdisplay
-
+    summaryBody.innerHTML = ""
     fetch('request.php',{
       method:'post',
       body: JSON.stringify({
         "Type":"Summary",
         "Action":type,
-        "PatientId":patID,
+        "PatientID":patID,
         "StartDate":shortdisplay,
         "EndDate":endshortdisplay,
     })
@@ -295,9 +296,128 @@ function summaryShow(type){
       .then(data =>{
         console.log(data)
         if (data != false) {
+          let tProtein = 0
+          let tCarbs = 0
+          let tFat = 0
+          let tFibre = 0;
+          let tSodium = 0;
+          let tSugar = 0;
+          let foodList = {}
+          let ceasedfoodList = {}
+
+          for (let key in data['Regime']) {
+            tProtein = tProtein + parseFloat(data['Regime'][key]['Protein'])
+            tCarbs = tCarbs + parseFloat(data['Regime'][key]['Carbs'])
+            tFat = tFat + parseFloat(data['Regime'][key]['Fat'])
+            tFibre = tFibre + parseFloat(data['Regime'][key]['Fibre'])
+            tSodium = tSodium + parseFloat(data['Regime'][key]['Sodium'])
+            tSugar = tSugar + parseFloat(data['Regime'][key]['Sugar'])
+            if (data['Regime'][key]['Status'] == "Given") {
+              if (foodList[data['Regime'][key]['RegimeName']]) {
+                foodList[data['Regime'][key]['RegimeName']] = foodList[data['Regime'][key]['RegimeName']] + 1
+
+              }else{
+                foodList[data['Regime'][key]['RegimeName']] = 1
+              }
+            }else{
+              if (ceasedfoodList[data['Regime'][key]['RegimeName']]) {
+                ceasedfoodList[data['Regime'][key]['RegimeName']] = ceasedfoodList[data['Regime'][key]['RegimeName']] + 1
+              }else{
+                ceasedfoodList[data['Regime'][key]['RegimeName']] = 1
+              }
+            }
+          }
+
+          let ceased = 0
+          for (let key in ceasedfoodList) {
+            ceased = ceased + ceasedfoodList[key]
+          }
+          let foods = 0
+          for (let key in foodList) {
+            foods = foods + foodList[key]
+          }
+          summaryBody.innerHTML = ""
+          let frist = document.createElement('p')
+          frist.innerText = "This patient has been successful assigned: " + foods + " Meals in the chosen week. And " + ceased + " meals has been rejected"
+          let second = document.createElement('p')
+          summaryBody.appendChild(frist)
+          summaryBody.appendChild(second)
+          let s = document.createElement('hr')
+          summaryBody.appendChild(s)
+
+          let t = document.createElement('table')
+          let header = document.createElement('tr')
+          let headerc1 = document.createElement('th')
+          headerc1.innerText = 'Meal/Medication Name'
+          header.appendChild(headerc1)
+          let headerc2 = document.createElement('th')
+          headerc2.innerText = 'Total Consumed Number'
+          header.appendChild(headerc2)
+          t.appendChild(header)
+          t.className = 'fulltable'
+          summaryBody.appendChild(t)
+
+          for (let key in foodList) {
+            let row = document.createElement('tr')
+            let headerc1 = document.createElement('td')
+            headerc1.innerText = key
+            row.appendChild(headerc1)
+            let headerc2 = document.createElement('td')
+            headerc2.setAttribute("align","middle")
+            headerc2.innerText = foodList[key]
+            row.appendChild(headerc2)
+            t.appendChild(row)
+          }
+          let medlist = {}
+          let ceasedmedlist = {}
+          for (let key in data['Medication']) {
+            if (data['Medication'][key]['Status'] == "Given") {
+              if (medlist[data['Medication'][key]['MedicationName']]) {
+                medlist[data['Medication'][key]['MedicationName']] =  medlist[data['Medication'][key]['MedicationName']] + parseFloat( data['Medication'][key]['Dosage'])
+
+              }else{
+                medlist[data['Medication'][key]['MedicationName']] = parseFloat( data['Medication'][key]['Dosage'])
+              }
+            }else{
+              if (ceasedmedlist[data['Medication'][key]['MedicationName']]) {
+                ceasedmedlist[data['Medication'][key]['MedicationName']] = ceasedmedlist[data['Medication'][key]['MedicationName']] + parseFloat( data['Medication'][key]['Dosage'])
+              }else{
+                ceasedmedlist[data['Medication'][key]['MedicationName']] = parseFloat(data['Medication'][key]['Dosage'])
+              }
+            }
+          }
+          let ceasedmed = 0
+          for (let key in ceasedmedlist) {
+            ceasedmed = ceasedmed + ceasedmedlist[key]
+          }
+          let meds = 0
+          for (let key in medlist) {
+            meds = meds + medlist[key]
+          }
+
+          console.log(medlist)
+          console.log(ceasedmed)
+          second.innerText = "This patient taken: " + meds + " Medications and reject " +ceasedmed + " medications in the chosen week"
+
+          for (let key in medlist) {
+            let row = document.createElement('tr')
+            let headerc1 = document.createElement('td')
+            headerc1.innerText = key
+            row.appendChild(headerc1)
+            let headerc2 = document.createElement('td')
+            headerc2.setAttribute("align","middle")
+            headerc2.innerText = medlist[key]
+            row.appendChild(headerc2)
+            t.appendChild(row)
+          }
 
         }else{
-          alert('database internal error')
+          if (data != []) {
+            alert('database internal error')
+
+          }else{
+
+          }
         }
       }
     );

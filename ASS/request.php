@@ -674,8 +674,88 @@
                 print(json_encode($answer));
             }
             if ($_POST['Action'] == "GPWS") {
-                # code...
-                print(json_encode( $_POST));
+
+                
+                $pID = intval($_POST['PatientID']);
+                $answer = array(
+                    "Regime" => array(),
+                    "Medication" => array(),
+                );
+                $sql_query = "SELECT * FROM ((([DietRegimeRecords]
+                INNER JOIN [DietRegime] ON
+                DietRegimeRecords.RegimeID = DietRegime.RegimeID)
+                INNER JOIN [Status] ON
+                DietRegimeRecords.StatusID = Status.StatusID)
+                INNER JOIN [Round] ON
+                DietRegimeRecords.RoundID = Round.RoundID)
+                INNER JOIN [Patients] ON
+                DietRegimeRecords.PatientID = Patients.PatientID
+                WHERE DietRegimeRecords.PatientID = $pID  AND 
+                `Day` >= #$startDate# AND `Day` <= #$endDate#
+                ORDER BY Day";
+
+                
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+
+
+                while (odbc_fetch_row($result)) {
+                    $regname = odbc_result($result,"RegimeName");
+                    $Protein = odbc_result($result,"Protein");
+                    $Fat = odbc_result($result,"Fat");
+                    $Carbs = odbc_result($result,"Carbs");
+                    $Sugar = odbc_result($result,"Sugar");
+                    $Sodium = odbc_result($result,"Sodium");
+                    $Fibre = odbc_result($result,"Fibre");
+                    $SN = odbc_result($result,"StatusName");
+                    $RN = odbc_result($result,"RoundName");
+                    $day = odbc_result($result,"Day");
+                    $regterm = array(
+                        "RegimeName" => $regname,
+                        "Protein" => $Protein,
+                        "Fat" => $Fat,
+                        "Carbs" => $Carbs,
+                        "Sugar" => $Sugar,
+                        "Sodium" => $Sodium,
+                        "Fibre" => $Fibre,
+                        "Status" => $SN,
+                        "Round" => $RN,
+                        "Date" => $day,
+                    );
+                    $answer['Regime'][] = $regterm;
+                }
+
+                $sql_query = "SELECT * FROM ((([MedicationRecords]
+                INNER JOIN [Medications] ON
+                MedicationRecords.MedicationID = Medications.MedicationID)
+                INNER JOIN [Status] ON
+                MedicationRecords.StatusID = Status.StatusID)
+                INNER JOIN [Round] ON
+                MedicationRecords.RoundID = Round.RoundID)
+                INNER JOIN [Patients] ON
+                MedicationRecords.PatientID = Patients.PatientID
+                WHERE MedicationRecords.PatientID = $pID  AND 
+                `Day` >= #$startDate# AND `Day` <= #$endDate#
+                ORDER BY Day";
+                
+                $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
+
+                while (odbc_fetch_row($result)) {
+                    $medname = odbc_result($result,"MedicationName");
+                    $SN = odbc_result($result,"StatusName");
+                    $RN = odbc_result($result,"RoundName");
+                    $day = odbc_result($result,"Day");
+                    $do  = odbc_result($result,"Dosage");
+                    $medterm = array(
+                        "MedicationName" => $medname,
+                        "Status" => $SN,
+                        "Round" => $RN,
+                        "Date" => $day,
+                        "Dosage" => $do,
+                    );
+                    $answer['Medication'][] = $medterm;
+                }
+
+                print(json_encode( $answer));
 
             }
         
