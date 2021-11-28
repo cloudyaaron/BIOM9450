@@ -27,11 +27,16 @@
         $to = $_COOKIE['token'];
         $sql_query = "SELECT * FROM [LoginStatus] WHERE `Token` ='$to'";
         $result = odbc_exec($conn,$sql_query) or die(odbc_errormsg());
-        $currentPractitioner = 3;
+        $currentPractitioner = -1;
         while (odbc_fetch_row($result)) {
             $currentPractitioner = odbc_result($result,"PractitionerID");
         }
-        
+        if ($currentPractitioner == -1) {
+            setcookie('token', null, -1, '/'); 
+            header("refresh:1; url=index.php");
+
+        }
+
         // Medication API
         if ($_POST['Type'] == 'Medications'){
             http_response_code(200);

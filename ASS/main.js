@@ -337,6 +337,62 @@ function summaryShow(type){
             foods = foods + foodList[key]
           }
           summaryBody.innerHTML = ""
+
+          // protein
+          let aprotein = 50
+          let d1 = document.createElement('div')
+          let bar1 = document.createElement('meter')
+          bar1.setAttribute('max',aprotein)
+          bar1.setAttribute('value',tProtein/7)
+          d1.innerText='Average Daily Protein taken:  '+ parseInt(tProtein / 7)+" / "+ aprotein+"  :    "
+          d1.appendChild(bar1)
+          summaryBody.appendChild(d1)
+
+          let afat = 61
+          let d2 = document.createElement('div')
+          let bar2 = document.createElement('meter')
+          bar2.setAttribute('max',afat)
+          bar2.setAttribute('value',tFat/7)
+          d2.innerText='Average Daily Fat taken:  '+ parseInt(tFat / 7)+" / "+ afat+"  :    "
+          d2.appendChild(bar2)
+          summaryBody.appendChild(d2)
+
+          let asodium = 2.3
+          let d3 = document.createElement('div')
+          let bar3 = document.createElement('meter')
+          bar3.setAttribute('max',asodium)
+          bar3.setAttribute('value',tSodium/7)
+          d3.innerText='Average Daily Sodium taken:  '+ parseInt(tSodium / 7)+" / "+ asodium+"  :    "
+          d3.appendChild(bar3)
+          summaryBody.appendChild(d3)
+
+          let asugar = 30
+          let d4 = document.createElement('div')
+          let bar4 = document.createElement('meter')
+          bar4.setAttribute('max',asugar)
+          bar4.setAttribute('value',tSugar/7)
+          d4.innerText='Average Daily Sugar taken:  '+ parseInt(tSugar / 7)+" / "+ asugar+"  :    "
+          d4.appendChild(bar4)
+          summaryBody.appendChild(d4)
+
+          let afibre = 27
+          let d5 = document.createElement('div')
+          let bar5 = document.createElement('meter')
+          bar5.setAttribute('max',afibre)
+          bar5.setAttribute('value',tFibre/7)
+          d5.innerText='Average Daily Fibre taken:  '+ parseInt(tFibre / 7)+" / "+ afibre+"  :    "
+          d5.appendChild(bar5)
+          summaryBody.appendChild(d5)
+
+          let acarbs = 270
+          let d6 = document.createElement('div')
+          let bar6 = document.createElement('meter')
+          bar6.setAttribute('max',acarbs)
+          bar6.setAttribute('value',tCarbs/7)
+          d6.innerText='Average Daily Carbs taken:  '+ parseInt(tCarbs / 7)+" / "+ acarbs+"  :    "
+          d6.appendChild(bar6)
+          summaryBody.appendChild(d6)
+
           let frist = document.createElement('p')
           frist.innerText = "This patient has been successful assigned: " + foods + " Meals in the chosen week. And " + ceased + " meals has been rejected"
           let second = document.createElement('p')
