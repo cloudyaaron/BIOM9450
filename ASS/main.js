@@ -65,7 +65,7 @@ function refreshCalendar(date) {
         })
           }).then(res=> res.json())
           .then(data =>{
-            // console.log(data)
+            console.log(data)
             if (data != false) {
               for (let key in data) {
                 var row = document.createElement('tr')
@@ -136,7 +136,13 @@ getPatientbutton.onclick = function(event) {
             }
             dateBox.disabled = false
             let day = new Date()
-            let shortdisplay = day.getFullYear()+"-" + (day.getMonth()+1) + "-"+day.getDate()
+            let dd = '0'
+            if (day.getDate() < 10) {
+              dd = dd+day.getDate()
+            }else{
+              dd = day.getDate()
+            }
+            let shortdisplay = day.getFullYear()+"-" + (day.getMonth()+1) + "-"+dd
       
             dateBox.value = shortdisplay
             refreshCalendar(dateBox.value)
