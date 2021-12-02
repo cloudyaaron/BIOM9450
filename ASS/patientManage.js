@@ -141,6 +141,8 @@ addPatButton.onclick = function(event){
   descriptionPat.value = ""
   GenderBox.value = ""
   AgeBox.value = ""
+  patientPhoto.setAttribute('src','ServiceUNSW.png')
+
   deletePatButton.disabled = true
   editPatButton.disabled = true
   currentPat.disabled = true
